@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <!-- title -->
+
+
+    
+
+<!-- keywords -->
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Tsz Chiu Wong">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Tsz Chiu Wong">
+    
+        <meta name="keywords" content="子曰要闹闹,Tsz Chiu Wong">
+    
+    <meta name="description" content="子曰要闹闹是一个独立的博客站点。文章的内容整理了我在工作、生活中遇到的问题，和一些自己在兴趣爱好上的瞎折腾，可能偶尔还会有个读后感…我想通过输出一些非专业的零基础人员都读懂的文章来帮助自己把虚浮的知识变扎实。如果这些文章恰巧也能解决你的问题，我会很开心的。欢迎交流讨论。">
+    <meta name="description" content="开发环境搭建照微信小程序入门教程之一：初次上手文章操作。文章读取顺序为7，4，5，8，6，1，2，3。 基础环境搭建完毕。效果如图：  基础知识点了解微信小程序入门教程之二：页面样式这篇：  第一节：.wxss文件就是小程序的CSS样式； 第二节：讲了Flex布局（暂时不做更多了解）、 小程序屏幕的宽度为750rpx、justify-content和align-items； 第三节：介绍了腾讯We">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信小程序">
+<meta property="og:url" content="https://tsz.me/p/20210913_%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F.html">
+<meta property="og:site_name" content="子曰要闹闹">
+<meta property="og:description" content="开发环境搭建照微信小程序入门教程之一：初次上手文章操作。文章读取顺序为7，4，5，8，6，1，2，3。 基础环境搭建完毕。效果如图：  基础知识点了解微信小程序入门教程之二：页面样式这篇：  第一节：.wxss文件就是小程序的CSS样式； 第二节：讲了Flex布局（暂时不做更多了解）、 小程序屏幕的宽度为750rpx、justify-content和align-items； 第三节：介绍了腾讯We">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tsz.me/images/QQ20210913135942.png">
+<meta property="article:published_time" content="2021-09-13T05:28:02.000Z">
+<meta property="article:modified_time" content="2021-09-13T05:28:02.000Z">
+<meta property="article:author" content="Tsz Chiu Wong">
+<meta property="article:tag" content="记录">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tsz.me/images/QQ20210913135942.png">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/favicon.ico">
+    
+    <title>微信小程序 · 子曰要闹闹</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20211217" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/dark.css?v=20211217" as="style">
+    <link rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" href="/css/mobile.css?v=20211217" media="(max-width: 960px)">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js?v=20211217" as="script">
+    <link rel="preload" href="/scripts/dark.js?v=20211217" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    
+    <!-- 百度统计  -->
+    
+        <script>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement("script");
+                hm.src = "https://hm.baidu.com/hm.js?1990fe4dfe653b35b522a1c9605d7f5f";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics  -->
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-V48XQ1JMHT"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-V48XQ1JMHT');
+        </script>
+    
+    <!-- Google AdSense  -->
+    
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7265728739442747" crossorigin="anonymous"></script>
+<meta name="generator" content="Hexo 6.2.0"><link rel="alternate" href="/atom.xml" title="子曰要闹闹" type="application/atom+xml">
+</head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+    
+        <body class="post-body">
+    
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        
+            <div class="header-sidebar-menu">
+        
+            
+                <div style="padding-left: 1px;">&#xe775;</div>
+            
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href=/>子曰要闹闹</a>
+        </span>
+    </div>
+    <!-- toggle banner for post layout -->
+    
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">子曰要闹闹</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">微信小程序</a>
+            </div>
+        </div>
+    
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- back to top button -->
+    <div class="footer-fixed-element">
+        
+            <div class="back-top back-top-hidden">
+        
+        
+            <div>&#xe639;</div>
+        
+        </div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="
+
+
+
+
+
+
+
+    height:50vh;
+
+">
+    
+    <!-- 主页  -->
+    
+        
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/images/header_image.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+                微信小程序
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+                
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        
+        
+            
+        
+        
+        <span class="post-category" data-categories="c_新生代农民工"">
+            <i class="fas fa-folder post-category-icon"></i>
+            <span class="post-category-text">
+                c_新生代农民工
+            </span>
+        </span>
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="记录">记录</a>
+    
+</div>
+
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">2.3k</span>阅读时长: <span class="post-count reading-time">8 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2021/09/13</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <h2 id="开发环境搭建"><a href="#开发环境搭建" class="headerlink" title="开发环境搭建"></a>开发环境搭建</h2><p>照<a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2020/10/wechat-miniprogram-tutorial-part-one.html">微信小程序入门教程之一：初次上手</a>文章操作。文章读取顺序为7，4，5，8，6，1，2，3。</p>
+<p>基础环境搭建完毕。效果如图：</p>
+<p><img src="/images/QQ20210913135942.png" alt="世界不会变好的"></p>
+<h2 id="基础知识点了解"><a href="#基础知识点了解" class="headerlink" title="基础知识点了解"></a>基础知识点了解</h2><p><a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2020/10/wechat-miniprogram-tutorial-part-two.html">微信小程序入门教程之二：页面样式</a>这篇：</p>
+<ul>
+<li>第一节：.wxss文件就是小程序的CSS样式；</li>
+<li>第二节：讲了<del>Flex布局（暂时不做更多了解）、</del> 小程序屏幕的宽度为750rpx、justify-content和align-items；</li>
+<li>第三节：介绍了腾讯<a target="_blank" rel="noopener" href="https://github.com/Tencent/weui">WeUI</a>和它的使用方法、<a target="_blank" rel="noopener" href="https://github.com/Tencent/weui-wxss">weui-wxss</a>；</li>
+<li>剩下的跳过。</li>
+</ul>
+<p>&#x2F;*</p>
+<p>网上随便找一个支持小程序的开源项目，对比weui-wxss开始搞事情。</p>
+<p>扩展阅读：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://www.wxappclub.com/topic/583">小程序基础篇之使用weui.wxss</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jing-zhe/p/11000971.html">微信小程序weui的使用</a></li>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/article/doc/000e427c49c218e6b9781bfdf5b013">你想在小程序里使用less嘛? （VScode版）</a></li>
+<li><a target="_blank" rel="noopener" href="https://less.bootcss.com/">Less快速入门</a></li>
+</ul>
+<p>产生以下疑问：</p>
+<ol>
+<li>weui-wxss到底干了啥？</li>
+</ol>
+<p>界面搞的差不多了，继续向下。</p>
+<p>*&#x2F;</p>
+<p><a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2020/10/wechat-miniprogram-tutorial-part-three.html">微信小程序入门教程之三：脚本编程</a>这篇：</p>
+<ul>
+<li>第一节：MVVM模式和数据绑定，即数据写在JS里面，前台用<code>&#123;&#123;变量名&#125;&#125;</code>引用；</li>
+<li>第二节：globalData属性可以用来存放全局数据；</li>
+<li>第三节：微信小程序事件模型，如何绑定事件；</li>
+<li>第四节：<code>wx</code>是小程序提供的原生对象，所有客户端 API 都定义在这个对象上面；</li>
+<li>第五节：如果第四节讲的是js的alert，那这节就是js的confirm&#x2F;prompt。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2020/11/wechat-miniprogram-tutorial-part-four.html">微信小程序入门教程之四：API 使用</a>这篇：</p>
+<ul>
+<li>第一节：你知道有<code>wx:for</code>这类属性的存在就好（写jsp的应该都懂）；</li>
+<li>第三节：<strong>与服务器交换数据</strong>，<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/api/network/request/wx.request.html">官方文档</a>；</li>
+<li>第四节：无需授权、登录的<code>&lt;open-data&gt;</code>标签；</li>
+<li>第五节：<del>获取不能唯一标识用户的个人信息（不能标识用户就球用没有）</del>；</li>
+<li>第六节：微信小程序的a标签<code>&lt;navigator&gt;</code>；</li>
+<li>第七节：用脚本进行跳转时使用<code>wx.navigateTo()</code>；</li>
+<li>第二节：微信的本地存储功能。</li>
+</ul>
+<p>&#x2F;&#x2F; 基础知识到这里就结束了。打开PyCharm继续搞事。</p>
+<h2 id="实际开发中遇到的问题"><a href="#实际开发中遇到的问题" class="headerlink" title="实际开发中遇到的问题"></a>实际开发中遇到的问题</h2><h3 id="如何获取-openID？"><a href="#如何获取-openID？" class="headerlink" title="如何获取 openID？"></a>如何获取 openID？</h3><p><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/article/doc/00082a04b94c00a9f3eb879ba5ac13">微信小程序获取openID及unionID</a>说明的比较详细：</p>
+<ol>
+<li>需要在微信小程序调用登录开放接口<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/login/wx.login.html">wx.login()</a>获取用户登陆凭证code；</li>
+<li>向服务器发送请求，并将code一起发送过去；</li>
+<li>接下来，在服务端调用<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html">auth.code2Session接口</a>；</li>
+<li>接口返回openid。</li>
+</ol>
+<p>这篇文章还说明，只想拿到openID的我良心大大的好。unionID未来也要拿。</p>
+<p>其他参考文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4e9cd99ecbf5">var、let、const 区别？</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/254812c8cca2">JavaScript ES6 规范</a> - 没细看</li>
+</ul>
+<h3 id="onLoad方法到底被调用了几次？"><a href="#onLoad方法到底被调用了几次？" class="headerlink" title="onLoad方法到底被调用了几次？"></a>onLoad方法到底被调用了几次？</h3><p>参考文档（同时打开的，未经过筛选）：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/doc/0004aa392e88084f4a99a45fb5b000">onload和onshow什么区别?</a></li>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/page.html">注册页面 | 微信开放文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/ljy950914/article/details/91384311">微信小程序onLoad、onShow、onHide、onUnload区别</a></li>
+<li><a target="_blank" rel="noopener" href="https://m.yisu.com/zixun/191221.html">微信小程序中的onLoad详解及简单实例</a></li>
+</ul>
+<p><strong>待验证。</strong></p>
+<h3 id="小程序-lt-view-gt-标签如何换行？"><a href="#小程序-lt-view-gt-标签如何换行？" class="headerlink" title="小程序&lt;view&gt;标签如何换行？"></a>小程序&lt;view&gt;标签如何换行？</h3><p>参考文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://www.lrxin.com/archives-1241.html">微信小程序 文本换行 实现转义&#x2F;n 换行符</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/Dorothy1224/article/details/104316229">微信小程序换行 br 无效解决方法</a></li>
+</ul>
+<p><del>我采用添加&lt;text&gt;标签的方法。</del></p>
+<p>直接看下面的<code>小程序如何显示HTML</code>，这样还能实现字体加粗等功能。</p>
+<h3 id="小程序如何多真机调试？"><a href="#小程序如何多真机调试？" class="headerlink" title="小程序如何多真机调试？"></a>小程序如何多真机调试？</h3><p>参考文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/doc/00084ef40e46f03e88a8857765b800">真机调试支持多个微信测试吗</a></li>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/article/doc/00062e21318b48972baac499056813">小程序如何在真机调试</a></li>
+</ul>
+<p><strong>验证结果：找不到权限配置的地方。</strong> 问题未解决。</p>
+<h3 id="小程序如何显示HTML？"><a href="#小程序如何显示HTML？" class="headerlink" title="小程序如何显示HTML？"></a>小程序如何显示HTML？</h3><p>参考文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/doc/ec946412e4516d9fce18fd0ee8abb45a">HTML内容如何在小程序显示？</a></li>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/component/rich-text.html">rich-text | 微信开放文档</a> - 采用此方法</li>
+<li><del><a target="_blank" rel="noopener" href="https://www.shuzhiduo.com/A/RnJWBqZYzq/">支付宝小程序开发——rich-text富文本组件支持html代码</a></del></li>
+<li><del><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44326007/article/details/103277401">微信小程序显示HTML富文本</a> - 使用的wxParse已停止维护</del></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000015789986/a-1020000016005596">微信小程序使用rich-text和wxparse解析富文本的区别</a> - 这篇文章提供了另外的思路（web-view）</li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wxw1314/p/7929633.html">微信小程序实现给循环列表点击添加类（单项和多项）</a> - 提供了比官方更实用的例子</li>
+<li><del><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/doc/00024cabb380a00db48cbe5fb51000?jumpto=comment&commentid=000600f21a42a86db88c29ba4564?source=indexmixflow">双重for循环中内部循环text前后都多出一行，为啥啊？我裂开了</a> - 对我没用，存档链接而已</del></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/sinat_15955423/article/details/100081646">小程序循环解析富文本数据</a> - <code>跟vue的v-html一样</code>，备忘改天了解下v-html</li>
+<li><strong><a target="_blank" rel="noopener" href="https://github.com/sbfkcel/towxml">……</a></strong></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000012250564">关于微信小程序webview的使用</a> - <del>web-view不支持支付能力。（可变相实现）</del> 文章中提到了<code>jssdk</code></li>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/article/doc/00044eb007c2c8dd1509a4e1656413">小程序webview组件，小程序和webview交互，小程序内联h5页面，小程序webview内网页实现微信支付</a> - 我当前并不需要支付能力。我只是想让大家看看文档的标题可以有多长……</li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6899426534239682568">喂汁，用Python写个专属Markdown转换工具</a> - 当前我服务端使用的python-markdown不能满足需求，考察下其他类库</li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/harrylyx/p/12395259.html">Mistune——更快的markdown解析器</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.chancel.ltd/articles/72">Python Markdown解析器Mistune使用指南</a> - 这个博客的样式看着挺顺眼</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/zdxerr/mistune-latex">zdxerr&#x2F;mistune-latex</a> - 恩……7年前的代码</li>
+<li><a target="_blank" rel="noopener" href="https://mistune.readthedocs.io/en/latest/">Mistune: Python Markdown Parser</a> - 2.0rc的Mistune貌似有些新功能</li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904035271573511">手把手带你入门 AST 抽象语法树</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/266697614">AST详解与运用</a></li>
+</ul>
+<p>官方虽然<code>不推荐使用String类型，性能会有所下降</code>，但是搬砖效率啊。我选String。</p>
+<p>到此，也该学会如何使用官方文档了。</p>
+<p>之所以不使用web-view，是因为我是个人开发者，不是公司。</p>
+<h3 id="小程序页面跳转应采取哪种方法（页面之间如何传参）（如何在跳转后返回上一级）？"><a href="#小程序页面跳转应采取哪种方法（页面之间如何传参）（如何在跳转后返回上一级）？" class="headerlink" title="小程序页面跳转应采取哪种方法（页面之间如何传参）（如何在跳转后返回上一级）？"></a>小程序页面跳转应采取哪种方法（页面之间如何传参）（如何在跳转后返回上一级）？</h3><p>参考文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/zull_kos_mos/article/details/80595828">小程序页面跳转的几个方法和区别</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ll15888/p/11813027.html">微信小程序页面跳转区别总结</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/19f1cab9c0e2">小程序几个页面跳转的区别</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/xushilong0812/article/details/109757122">微信小程序页面跳转&#x2F;返回</a> - 跳转后如何返回</li>
+</ul>
+<p>根据实际应用挑选合适的方法。</p>
+<h3 id="如何为小程序不同的页面设置标题？"><a href="#如何为小程序不同的页面设置标题？" class="headerlink" title="如何为小程序不同的页面设置标题？"></a>如何为小程序不同的页面设置标题？</h3><p>参考文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/7b06d19fd7a0">小程序之修改页面标题</a></li>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/doc/0000ea140ec9b01cdc283eae651800">小程序页面标题</a></li>
+</ul>
+<p>这个容易。</p>
+<h3 id="小程序是否有大小的限制？"><a href="#小程序是否有大小的限制？" class="headerlink" title="小程序是否有大小的限制？"></a>小程序是否有大小的限制？</h3><p>参考文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/subpackages.html">分包加载 | 微信开放文档</a> - 简单的说，就是2M限制</li>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/doc/00002e3056c9203fbf9a15d4e5bc00">小程序包超过大小限制？</a> - 在<code>开发者工具&gt;详情&gt;基本信息&gt;本地代码</code>中查看代码包大小</li>
+</ul>
+<h3 id="textarea如何取值？"><a href="#textarea如何取值？" class="headerlink" title="textarea如何取值？"></a>textarea如何取值？</h3><p>参考文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://one-more-tech.gitlab.io/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8Ftextarea%E5%8F%96%E5%80%BC%E3%80%81value%E5%90%8C%E6%AD%A5%E3%80%81fixed-input-%E8%A2%AB%E9%94%AE%E7%9B%98%E9%81%AE%E7%9B%96%E7%AD%89%E9%97%AE%E9%A2%98/index/">微信小程序textarea取值、value同步、fixed input 被键盘遮盖等问题</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.yisu.com/zixun/374754.html">微信小程序组件textarea多行输入框的示例分析</a> - 暂时没有用到</li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/At867604340/p/12112175.html">微信小程序获取多个input和textarea的值（es6加微信小程序APi）</a> - 这个是主要的</li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ee6b297eb6c3">wx:for的使用</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/sdfujichao/article/details/80251531">微信小程序-textarea获取输入值（在modal中获取值）</a></li>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/doc/5d39f76fa8af76f7078dd913e1795acd">小程序textarea组件字数限制问题</a></li>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/article/doc/0002a6fbcac9a82dbfdaeb78c5b813">微信小程序this.setData如何修改对象、数组中的值</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000008151383">微信小程序：如何用setData修改数组？</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u013751625/article/details/80826146">微信小程序如何让多个button绑定同一个事件而区分button</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/Nefertari_YinC/article/details/83009083">小程序View或button点击响应方法的数据传值</a></li>
+</ul>
+<h3 id="如何查看别的小程序源码？"><a href="#如何查看别的小程序源码？" class="headerlink" title="如何查看别的小程序源码？"></a>如何查看别的小程序源码？</h3><p>参考文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/138936448">只需两步获取任何小程序源码</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/ZhaoWMian/article/details/105074836">如何获取别人微信小程序的源文件？</a></li>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/doc/0006448bc706a00fe9472eb9a5e400">官方怎么看？只需两步获取任何微信小程序源码</a></li>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/user-encryptkey.html">小程序加密网络通道 | 微信开放文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/article/doc/000aca16c544f89485297d7aa58413">小程序请求数据双向混合加密和防篡改+防重放攻击的实现</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4b136750bdea">小程序接口加密</a></li>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/doc/0004c2c3e08070596abaaccfe5bc00">小程序代码怎么做加密？</a> - 里面提到了个uniapp的东西</li>
+</ul>
+<p>首先可以确定的是，可以获取到他人的小程序源码。<strong>暂未实践操作。</strong></p>
+<p>同样的，作者除了混淆代码外，也没有什么保护自己代码的手段。</p>
+<h3 id="picker组件怎样实现自动弹出？"><a href="#picker组件怎样实现自动弹出？" class="headerlink" title="picker组件怎样实现自动弹出？"></a>picker组件怎样实现自动弹出？</h3><p>参考文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/doc/d555284dfad9f1d44ec2b5dd9ffa7c27">picker 组件是否考虑添加自动弹出的选项</a> - 2017.11.1 文档</li>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/doc/0006ec2ceb0cb08e5167f3e5e56800">picker 手动控制显示与隐藏，望官方能尽快处理。</a> - 2018.9.21 文档</li>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/doc/0004ca9361c3806128b9e184251c00">picker 组件需要用户触发才能弹窗出来，能否支持接口设置隐藏，显示？</a> - 2020.1.2 文档</li>
+</ul>
+<p>结论：<strong>无法实现这个要求。</strong></p>
+<h3 id="其他不分类的搜索结果"><a href="#其他不分类的搜索结果" class="headerlink" title="其他不分类的搜索结果"></a>其他不分类的搜索结果</h3><p>&#x2F;&#x2F; wx:key 是干什么的</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/chenzhiran/p/11160702.html">微信小程序wx:key以及wx:key&#x3D;” *this”详解</a></li>
+</ul>
+<p>&#x2F;&#x2F; 小程序开发有没有什么最佳实践？</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/audits/best-practice.html">最佳实践 | 微信开放文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9435633612e4">微信小程序的最佳实践 -知乎专栏</a> - 这个链接是简书的……</li>
+<li><a target="_blank" rel="noopener" href="https://refined-x.com/2019/02/25/%E6%97%B6%E9%9A%94%E4%B8%A4%E5%B9%B4%EF%BC%8C%E5%86%8D%E6%AC%A1%E4%B8%8A%E6%89%8B%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/">时隔两年，再次上手小程序开发</a></li>
+</ul>
+<p>&#x2F;&#x2F; Javascript Promise 是啥？</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Using_promises">使用 Promise</a> - 这个是写的最好的，也应该是最权威的</li>
+<li><a target="_blank" rel="noopener" href="https://wizardforcel.gitbooks.io/exploring-es6/content/md/24.10.html">Promise 的优缺点</a> - 这是一本儿书……</li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903544923881480">Promise一些小总结</a> - 配图不错</li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/@keshidong.dev/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BApromise-69bcafbe4496">深入浅出Promise</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/1022910821149312/1023024413276544">Promise</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.hangge.com/blog/cache/detail_1635.html">JS - Promise使用详解1（基本概念、使用优点）</a></li>
+</ul>
+<h3 id="如何发布小程序？"><a href="#如何发布小程序？" class="headerlink" title="如何发布小程序？"></a>如何发布小程序？</h3><p>参考文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/24059ee078ba">微信小程序从开发到上线</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.sxl.cn/content/blog/xcxshenhe/">小程序审核大概要多久？审核标准是什么？</a></li>
+</ul>
+<h3 id="小程序发布更新后用户是怎么更新小程序的？"><a href="#小程序发布更新后用户是怎么更新小程序的？" class="headerlink" title="小程序发布更新后用户是怎么更新小程序的？"></a>小程序发布更新后用户是怎么更新小程序的？</h3><p>参考文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/doc/000404097207387d257b6685351800">小程序新版本发布后，老用户小程序没更新，也没有弹出自动更新的提示？</a></li>
+<li><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/runtime/update-mechanism.html">小程序更新机制</a></li>
+</ul>
+
+    </article>
+    <!-- license -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://tsz.me">Tsz Chiu Wong</a>
+            <p>原文链接：<a href="https://tsz.me/p/20210913_%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F.html">https://tsz.me/p/20210913_%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F.html</a>
+            <p>发表日期：<a href="https://tsz.me/p/20210913_%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F.html">2021年09月13日 13时28分02秒</a>
+            <p>更新日期：<a href="https://tsz.me/p/20210913_%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F.html">2021年09月13日 13时28分02秒</a>
+            <p>版权声明：本博客所有标注原创的文章除特别声明外，均采用<a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA</a>许可协议。转载请注明出处。</p>
+        </div>
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href="/p/20211007_%E3%80%8A%E5%8D%A1%E7%89%87%E7%AC%94%E8%AE%B0%E5%86%99%E4%BD%9C%E6%B3%95%E3%80%8B%E9%98%85%E8%AF%BB%E4%B8%8E%E5%AE%9E%E8%B7%B5.html" title="《卡片笔记写作法》阅读与实践">
+                    <div class="nextTitle">《卡片笔记写作法》阅读与实践</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/hardware/switch.html" title="Switch!">
+                    <div class="prevTitle">Switch!</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- comment -->
+    
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+
+            
+
+            
+
+            
+
+            <!-- utteranc评论 -->
+
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+
+            
+            
+
+            
+
+        </div>
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
+    
+</main>
+
+                <!-- profile -->
+                
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+        <div class="social">
+            
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a href="/atom.xml" class="iconfont-archer rss" target="_blank" title=rss></a>
+            
+        
+    
+
+
+        </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank" rel="external nofollow">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    
+    <!-- 不蒜子  -->
+    
+        <div class="busuanzi-container">
+            
+             
+                <span id="busuanzi_container_site_pv">本站总计访问次数：<span id="busuanzi_value_site_pv"></span></span>
+            
+        </div>
+    	
+</footer>
+
+        </div>
+        <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">1.</span> <span class="toc-text">开发环境搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%82%B9%E4%BA%86%E8%A7%A3"><span class="toc-number">2.</span> <span class="toc-text">基础知识点了解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E5%BC%80%E5%8F%91%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">3.</span> <span class="toc-text">实际开发中遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96-openID%EF%BC%9F"><span class="toc-number">3.1.</span> <span class="toc-text">如何获取 openID？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#onLoad%E6%96%B9%E6%B3%95%E5%88%B0%E5%BA%95%E8%A2%AB%E8%B0%83%E7%94%A8%E4%BA%86%E5%87%A0%E6%AC%A1%EF%BC%9F"><span class="toc-number">3.2.</span> <span class="toc-text">onLoad方法到底被调用了几次？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F-lt-view-gt-%E6%A0%87%E7%AD%BE%E5%A6%82%E4%BD%95%E6%8D%A2%E8%A1%8C%EF%BC%9F"><span class="toc-number">3.3.</span> <span class="toc-text">小程序&lt;view&gt;标签如何换行？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%A6%82%E4%BD%95%E5%A4%9A%E7%9C%9F%E6%9C%BA%E8%B0%83%E8%AF%95%EF%BC%9F"><span class="toc-number">3.4.</span> <span class="toc-text">小程序如何多真机调试？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%A6%82%E4%BD%95%E6%98%BE%E7%A4%BAHTML%EF%BC%9F"><span class="toc-number">3.5.</span> <span class="toc-text">小程序如何显示HTML？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A1%B5%E9%9D%A2%E8%B7%B3%E8%BD%AC%E5%BA%94%E9%87%87%E5%8F%96%E5%93%AA%E7%A7%8D%E6%96%B9%E6%B3%95%EF%BC%88%E9%A1%B5%E9%9D%A2%E4%B9%8B%E9%97%B4%E5%A6%82%E4%BD%95%E4%BC%A0%E5%8F%82%EF%BC%89%EF%BC%88%E5%A6%82%E4%BD%95%E5%9C%A8%E8%B7%B3%E8%BD%AC%E5%90%8E%E8%BF%94%E5%9B%9E%E4%B8%8A%E4%B8%80%E7%BA%A7%EF%BC%89%EF%BC%9F"><span class="toc-number">3.6.</span> <span class="toc-text">小程序页面跳转应采取哪种方法（页面之间如何传参）（如何在跳转后返回上一级）？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%B8%BA%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8D%E5%90%8C%E7%9A%84%E9%A1%B5%E9%9D%A2%E8%AE%BE%E7%BD%AE%E6%A0%87%E9%A2%98%EF%BC%9F"><span class="toc-number">3.7.</span> <span class="toc-text">如何为小程序不同的页面设置标题？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%98%AF%E5%90%A6%E6%9C%89%E5%A4%A7%E5%B0%8F%E7%9A%84%E9%99%90%E5%88%B6%EF%BC%9F"><span class="toc-number">3.8.</span> <span class="toc-text">小程序是否有大小的限制？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#textarea%E5%A6%82%E4%BD%95%E5%8F%96%E5%80%BC%EF%BC%9F"><span class="toc-number">3.9.</span> <span class="toc-text">textarea如何取值？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%9F%A5%E7%9C%8B%E5%88%AB%E7%9A%84%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%BA%90%E7%A0%81%EF%BC%9F"><span class="toc-number">3.10.</span> <span class="toc-text">如何查看别的小程序源码？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#picker%E7%BB%84%E4%BB%B6%E6%80%8E%E6%A0%B7%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%BC%B9%E5%87%BA%EF%BC%9F"><span class="toc-number">3.11.</span> <span class="toc-text">picker组件怎样实现自动弹出？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E4%B8%8D%E5%88%86%E7%B1%BB%E7%9A%84%E6%90%9C%E7%B4%A2%E7%BB%93%E6%9E%9C"><span class="toc-number">3.12.</span> <span class="toc-text">其他不分类的搜索结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%8F%91%E5%B8%83%E5%B0%8F%E7%A8%8B%E5%BA%8F%EF%BC%9F"><span class="toc-number">3.13.</span> <span class="toc-text">如何发布小程序？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%8F%91%E5%B8%83%E6%9B%B4%E6%96%B0%E5%90%8E%E7%94%A8%E6%88%B7%E6%98%AF%E6%80%8E%E4%B9%88%E6%9B%B4%E6%96%B0%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%EF%BC%9F"><span class="toc-number">3.14.</span> <span class="toc-text">小程序发布更新后用户是怎么更新小程序的？</span></a></li></ol></li></ol>
+            </div>
+        
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 17
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+        
+            
+            
+            <div class="archive-year"> 2022 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/03</span>
+            <a class="archive-post-title" href="/p/20220903_v2ray%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%20(%E8%AF%B7%E6%B7%BB%E5%8A%A0%E8%BF%9E%E5%AD%97%E7%AC%A6).html">v2ray环境部署</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/12</span>
+            <a class="archive-post-title" href="/p/20220512_install-nginx-mariadb-php-lemp-lnmp-stack.html">LEMP/LNMP环境搭建（Debian 11）</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/11</span>
+            <a class="archive-post-title" href="/p/20220511_debian-11-installation-guide.html">Debian 11安装与基本配置</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2021 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span>
+            <a class="archive-post-title" href="/p/20211007_%E3%80%8A%E5%8D%A1%E7%89%87%E7%AC%94%E8%AE%B0%E5%86%99%E4%BD%9C%E6%B3%95%E3%80%8B%E9%98%85%E8%AF%BB%E4%B8%8E%E5%AE%9E%E8%B7%B5.html">《卡片笔记写作法》阅读与实践</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/13</span>
+            <a class="archive-post-title" href="/p/20210913_%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F.html">微信小程序</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span>
+            <a class="archive-post-title" href="/hardware/switch.html">Switch!</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/03</span>
+            <a class="archive-post-title" href="/p/20210903_microblog.html">空中有朵棉花糖</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/02</span>
+            <a class="archive-post-title" href="/p/20210902_%E4%BA%BA%E7%94%9F%E8%8B%A6%E7%9F%AD%E7%9A%84Python.html">人生苦短的Python</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/01</span>
+            <a class="archive-post-title" href="/p/20210901_MySQL-%E6%90%9E%E5%AE%83.html">MySQL，搞它</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/30</span>
+            <a class="archive-post-title" href="/p/20210830_%E5%88%9D%E6%AD%A5%E4%BA%86%E8%A7%A3LGBT.html">初步了解LGBT</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/25</span>
+            <a class="archive-post-title" href="/p/20210125_Resilio-Sync-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C.html">Resilio Sync 工具使用手册</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2020 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/14</span>
+            <a class="archive-post-title" href="//tsz.me/hardware/xbox-one.html">xbox one 相关记录</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/16</span>
+            <a class="archive-post-title" href="/p/20200716_my-video-production-attempts-and-thoughts.html">我的视频制作尝试与想法（2022）</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2019 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/23</span>
+            <a class="archive-post-title" href="/p/20191223_%E5%8D%9A%E5%AE%A2%E5%86%8D%E6%90%AD%E5%BB%BA.html">博客再搭建</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2016 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/09</span>
+            <a class="archive-post-title" href="/p/20160909_my-keyboards.html">我的键盘清单</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2014 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/16</span>
+            <a class="archive-post-title" href="/hardware/raspberry-pi.html">Raspberry Pi 使用记录</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/03</span>
+            <a class="archive-post-title" href="/p/20140603_%E5%81%9A%E8%8F%9C%E7%BB%83%E4%B9%A0.html">做菜练习</a>
+        </li>
+    
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+        
+            <span class="sidebar-tag-name" data-tags="技术类">
+                <span class="iconfont-archer">&#xe606;</span>
+                技术类
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="LGBT">
+                <span class="iconfont-archer">&#xe606;</span>
+                LGBT
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="跨性别">
+                <span class="iconfont-archer">&#xe606;</span>
+                跨性别
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="厌女症">
+                <span class="iconfont-archer">&#xe606;</span>
+                厌女症
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="社会排斥">
+                <span class="iconfont-archer">&#xe606;</span>
+                社会排斥
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="性别歧视">
+                <span class="iconfont-archer">&#xe606;</span>
+                性别歧视
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="女权主义">
+                <span class="iconfont-archer">&#xe606;</span>
+                女权主义
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="生活类">
+                <span class="iconfont-archer">&#xe606;</span>
+                生活类
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="吃">
+                <span class="iconfont-archer">&#xe606;</span>
+                吃
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="记录">
+                <span class="iconfont-archer">&#xe606;</span>
+                记录
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="配置">
+                <span class="iconfont-archer">&#xe606;</span>
+                配置
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="第三类">
+                <span class="iconfont-archer">&#xe606;</span>
+                第三类
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="设备">
+                <span class="iconfont-archer">&#xe606;</span>
+                设备
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="游戏主机">
+                <span class="iconfont-archer">&#xe606;</span>
+                游戏主机
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="开箱">
+                <span class="iconfont-archer">&#xe606;</span>
+                开箱
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="MySQL">
+                <span class="iconfont-archer">&#xe606;</span>
+                MySQL
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="数据库">
+                <span class="iconfont-archer">&#xe606;</span>
+                数据库
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="软件">
+                <span class="iconfont-archer">&#xe606;</span>
+                软件
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="开发">
+                <span class="iconfont-archer">&#xe606;</span>
+                开发
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="读书">
+                <span class="iconfont-archer">&#xe606;</span>
+                读书
+            </span>
+        
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="原创">
+            <span class="iconfont-archer">&#xe60a;</span>
+            原创
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_好奇">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_好奇
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_生活">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_生活
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_设备">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_设备
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_新生代农民工">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_新生代农民工
+        </span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMetaRoot = "/"
+    if (siteMetaRoot === "undefined") {
+        siteMetaRoot = '/'
+    }
+    var siteMeta = {
+        url: "https://tsz.me",
+        root: siteMetaRoot,
+        author: "Tsz Chiu Wong"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+
+        <!-- main func -->
+        <script src="/scripts/main.js?v=20211217"></script>
+        <!-- dark mode -->
+        <script src="/scripts/dark.js?v=20211217"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+        <!-- algolia -->
+        
+        <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20211217" async></script>
+        
+        <!-- mermaid -->
+        
+    </body>
+</html>

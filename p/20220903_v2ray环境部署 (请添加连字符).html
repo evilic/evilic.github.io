@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <!-- title -->
+
+
+    
+
+<!-- keywords -->
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Tsz Chiu Wong">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Tsz Chiu Wong">
+    
+        <meta name="keywords" content="子曰要闹闹,Tsz Chiu Wong">
+    
+    <meta name="description" content="子曰要闹闹是一个独立的博客站点。文章的内容整理了我在工作、生活中遇到的问题，和一些自己在兴趣爱好上的瞎折腾，可能偶尔还会有个读后感…我想通过输出一些非专业的零基础人员都读懂的文章来帮助自己把虚浮的知识变扎实。如果这些文章恰巧也能解决你的问题，我会很开心的。欢迎交流讨论。">
+    <meta name="description" content="背景8月17日下午，原本正常使用的v2ray服务突然遭遇频繁的tcp阻断，网络访问断断续续，大有服务器要跪的样子。无奈这是基础服务，只能放下手头正在开展的工作，转来优先处理这个问题（带着恼怒）。 我当前isp是联通，远程服务器配置是nginx+tls+websocket+v2ray。上次服务器配置更新是在2年半前，期间也有配置需要调整，但服务运行正常，我懒得没动。 为处理这个问题，我做了以下前置动">
+<meta property="og:type" content="article">
+<meta property="og:title" content="v2ray环境部署">
+<meta property="og:url" content="https://tsz.me/p/20220903_v2ray%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%20(%E8%AF%B7%E6%B7%BB%E5%8A%A0%E8%BF%9E%E5%AD%97%E7%AC%A6).html">
+<meta property="og:site_name" content="子曰要闹闹">
+<meta property="og:description" content="背景8月17日下午，原本正常使用的v2ray服务突然遭遇频繁的tcp阻断，网络访问断断续续，大有服务器要跪的样子。无奈这是基础服务，只能放下手头正在开展的工作，转来优先处理这个问题（带着恼怒）。 我当前isp是联通，远程服务器配置是nginx+tls+websocket+v2ray。上次服务器配置更新是在2年半前，期间也有配置需要调整，但服务运行正常，我懒得没动。 为处理这个问题，我做了以下前置动">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-03T06:39:55.000Z">
+<meta property="article:modified_time" content="2022-09-03T06:39:55.000Z">
+<meta property="article:author" content="Tsz Chiu Wong">
+<meta property="article:tag" content="技术类">
+<meta name="twitter:card" content="summary">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/favicon.ico">
+    
+    <title>v2ray环境部署 · 子曰要闹闹</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20211217" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/dark.css?v=20211217" as="style">
+    <link rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" href="/css/mobile.css?v=20211217" media="(max-width: 960px)">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js?v=20211217" as="script">
+    <link rel="preload" href="/scripts/dark.js?v=20211217" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    
+    <!-- 百度统计  -->
+    
+        <script>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement("script");
+                hm.src = "https://hm.baidu.com/hm.js?1990fe4dfe653b35b522a1c9605d7f5f";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics  -->
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-V48XQ1JMHT"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-V48XQ1JMHT');
+        </script>
+    
+    <!-- Google AdSense  -->
+    
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7265728739442747" crossorigin="anonymous"></script>
+<meta name="generator" content="Hexo 6.2.0"><link rel="alternate" href="/atom.xml" title="子曰要闹闹" type="application/atom+xml">
+</head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+    
+        <body class="post-body">
+    
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        
+            <div class="header-sidebar-menu">
+        
+            
+                <div style="padding-left: 1px;">&#xe775;</div>
+            
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href=/>子曰要闹闹</a>
+        </span>
+    </div>
+    <!-- toggle banner for post layout -->
+    
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">子曰要闹闹</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">v2ray环境部署</a>
+            </div>
+        </div>
+    
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- back to top button -->
+    <div class="footer-fixed-element">
+        
+            <div class="back-top back-top-hidden">
+        
+        
+            <div>&#xe639;</div>
+        
+        </div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="
+
+
+
+
+
+
+
+    height:50vh;
+
+">
+    
+    <!-- 主页  -->
+    
+        
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+                v2ray环境部署
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+                
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        
+        
+            
+        
+        
+        <span class="post-category" data-categories="原创"">
+            <i class="fas fa-folder post-category-icon"></i>
+            <span class="post-category-text">
+                原创
+            </span>
+        </span>
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="技术类">技术类</a>
+    
+</div>
+
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">3k</span>阅读时长: <span class="post-count reading-time">12 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2022/09/03</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>8月17日下午，原本正常使用的v2ray服务突然遭遇频繁的<a target="_blank" rel="noopener" href="https://itlanyan.com/recovery-blocked-ip/">tcp阻断</a>，网络访问断断续续，大有服务器要跪的样子。无奈这是基础服务，只能放下手头正在开展的工作，转来优先处理这个问题（带着恼怒）。</p>
+<p>我当前isp是联通，远程服务器配置是nginx+tls+websocket+v2ray。上次服务器配置更新是在2年半前，期间也有配置需要调整，但服务运行正常，我懒得没动。</p>
+<p>为处理这个问题，我做了以下前置动作：</p>
+<ul>
+<li>参考他人在相同配置下<a target="_blank" rel="noopener" href="https://github.com/v2ray/v2ray-core/issues/2889">v2ray被墙</a>的具体情况；</li>
+<li>了解这两年多<a target="_blank" rel="noopener" href="https://www.chengxiaobai.com/essays/v2ray-trojan-xray">翻墙工具有哪些发展</a>；</li>
+</ul>
+<p>最终确定下来，我要趁这个机会做如下调整：</p>
+<ol>
+<li>放弃原本的CentOS，改系统为Debian。CentOS停止支持，换上Debian图个安稳。</li>
+<li>更换原有域名。原有域名只有这一个作用，释放后停止续费节省money。</li>
+<li>给v2ray的新域名套上cloudflare。之前一直不想更换nameserver，也不想处理cdn的https证书，所以没套cdn。<strong>这次套cdn也不一定能用，但至少应该会保住ip。</strong> 在保住ip的前提下，剩下的慢慢解决。</li>
+<li>记录此次配置过程。就因为我一直没写文档，所以在这么长的时间里我没有调整过配置。为此我多花了域名1年的费用…心疼ing。</li>
+</ol>
+<p>说干就干。在tcp阻断的情况下，只能先连国内vps，再ssh到国外vps。还好我有台阿里ecs。</p>
+<h2 id="操作记录"><a href="#操作记录" class="headerlink" title="操作记录"></a>操作记录</h2><h3 id="重装系统"><a href="#重装系统" class="headerlink" title="重装系统"></a>重装系统</h3><p>我的服务器是<a target="_blank" rel="noopener" href="https://bwh81.net/">搬瓦工</a>的，重装系统的过程就是<code>关机</code>-<code>登陆官网后台</code>-<code>进入KiwiVM管理页面</code>-<code>Install new OS</code>。没什么好说的，还不会的话看这篇<a target="_blank" rel="noopener" href="https://www.bandwagonhost.net/417.html">登录KiwiVM控制面板并重装系统</a>即可。</p>
+<p>重装Debian系统后第一件事就是更新系统。<strong>本篇所有的服务器指令都是直接以root身份执行的。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">apt update</span><br><span class="line">apt list --upgradable</span><br><span class="line">apt upgrade</span><br><span class="line">sync</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+
+<p>开启防火墙。搬瓦工修改了默认的ssh端口，所以在执行防火墙开启指令<code>ufw enable</code>前，必须先将指定的ssh端口加入允许列表（<code>ufw allow 12345/tcp</code>指令开放了12345端口的tcp连接），否则……即便使用默认ssh端口，在开启防火墙前也要先加入允许。防火墙ufw的详细使用说明可参考<a target="_blank" rel="noopener" href="https://www.myfreax.com/how-to-setup-a-firewall-with-ufw-on-debian-10/">在Debian中配置防火墙ufw</a>。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">apt update</span><br><span class="line">apt install ufw</span><br><span class="line"></span><br><span class="line">ufw status</span><br><span class="line">ufw allow 12345/tcp</span><br><span class="line">ufw enable</span><br><span class="line">ufw status</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装Nginx（nginx-tls）"><a href="#安装Nginx（nginx-tls）" class="headerlink" title="安装Nginx（nginx+tls）"></a>安装Nginx（nginx+tls）</h3><p>nginx的安装没什么好说的，直接看我另一篇Nginx安装文档就行。</p>
+<p>接下来就是配置nginx，打开防火墙，完成DNS解析。有人说在freenom上可以免费购买域名，但是购买成功可能需要一点技巧。我不想耽误时间，也不想再额外添加一个没有用的域名，即使它是免费的。我这边只提供下信息，谁有需要谁自己去研究。</p>
+<p>配置nginx，添加一个新的空站点。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mkdir /usr/share/nginx/html/new_site</span><br><span class="line">cp /usr/share/nginx/html/index.html /usr/share/nginx/html/new_site/</span><br><span class="line">chown -R nginx:nginx /usr/share/nginx/html/new_site/</span><br><span class="line"></span><br><span class="line">cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/new_site.conf</span><br><span class="line">mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.deleted</span><br></pre></td></tr></table></figure>
+
+<p><code>vi /etc/nginx/conf.d/new_site.conf</code>，新内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    server_name  newsite.com;</span><br><span class="line"></span><br><span class="line">    access_log  /var/log/nginx/newsite.com.access.log  main;</span><br><span class="line"></span><br><span class="line">    root   /usr/share/nginx/html/new_site;</span><br><span class="line">    index  index.html;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        try_files $uri $uri/ =404;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    error_page   500 502 503 504  /50x.html;</span><br><span class="line">    location = /50x.html &#123;</span><br><span class="line">        root   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    # 转发websocket请求到v2ray配置，开始</span><br><span class="line"></span><br><span class="line">    # 转发websocket请求到v2ray配置，结束</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使新站点配置生效：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nginx -t</span><br><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+
+<p>防火墙允许80、443端口访问。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ufw status</span><br><span class="line">ufw allow http</span><br><span class="line">ufw allow https</span><br><span class="line">ufw status</span><br></pre></td></tr></table></figure>
+
+<p>在完成newsite.com域名的dns解析后，网站已经可以正常访问了。接下来我们会为网站开启https。此处我是通过<a target="_blank" rel="noopener" href="https://cn.ubuntu.com/blog/what-is-snap-application">snapd</a>安装<a target="_blank" rel="noopener" href="https://certbot.eff.org/instructions?ws=nginx&os=debianbuster">certbot</a>，并使用certbot获取https证书的。<code>certbot --nginx</code>会自动修改nginx配置文件以开启站点https访问。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">apt update</span><br><span class="line">apt install snapd</span><br><span class="line">sync</span><br><span class="line">reboot</span><br><span class="line"></span><br><span class="line">snap install core</span><br><span class="line">snap refresh core</span><br><span class="line">snap install --classic certbot</span><br><span class="line">ln -s /snap/bin/certbot /usr/bin/certbot</span><br><span class="line"></span><br><span class="line">certbot --nginx</span><br></pre></td></tr></table></figure>
+
+<p>至此，tls也有了。</p>
+<h3 id="v2ray安装（v2ray-websocket）"><a href="#v2ray安装（v2ray-websocket）" class="headerlink" title="v2ray安装（v2ray+websocket）"></a>v2ray安装（v2ray+websocket）</h3><p>安装v2ray。v2ray的官网现在是<a target="_blank" rel="noopener" href="https://www.v2fly.org/">v2fly</a>了，这是需要注意的。它的文档中包含了<a target="_blank" rel="noopener" href="https://www.v2fly.org/guide/install.html">Debian下v2ray的安装</a>。具体指令如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">apt update</span><br><span class="line">apt install v2ray</span><br><span class="line">v2ray -version</span><br><span class="line">systemctl status v2ray</span><br></pre></td></tr></table></figure>
+
+<p>额外补充几点，省得我日后还要重新看它的文档：</p>
+<ol>
+<li>我丝毫不关心官方文档中说的<code>Unstable 仓库</code>到底是什么，官方配置步骤中的1、2、3被直接跳过；</li>
+<li>这样直接安装的v2ray的版本号是<code>4.34.0</code>，写在这里是为了日后配置v2ray时方便确认该版本是否支持新功能；</li>
+<li>官方配置文档中使用<code>systemctl edit v2ray.service</code>特别指定日志目录不是必需的，你不一定需要开启v2ray日志；<strong>我开启了日志，所以也执行了官方此步骤的推荐配置；</strong></li>
+<li><code>systemctl edit v2ray.service</code>命令相当于执行<code>vi /usr/lib/systemd/system/v2ray.service</code>后再执行<code>systemctl daemon-reload</code>，它们是等效的。</li>
+<li>v2ray默认的配置文件是<code>/etc/v2ray/config.json</code>。</li>
+</ol>
+<p>配置v2ray，<code>vi /etc/v2ray/config.json</code>修改文件内容如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;log&quot;</span><span class="punctuation">:</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;access&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/var/log/v2ray/access.log&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;error&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/var/log/v2ray/error.log&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;loglevel&quot;</span><span class="punctuation">:</span> <span class="string">&quot;warning&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">&quot;inbounds&quot;</span><span class="punctuation">:</span></span><br><span class="line">    <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;sniffing&quot;</span><span class="punctuation">:</span></span><br><span class="line">            <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;enabled&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;destOverride&quot;</span><span class="punctuation">:</span></span><br><span class="line">                <span class="punctuation">[</span></span><br><span class="line">                    <span class="string">&quot;http&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="string">&quot;tls&quot;</span></span><br><span class="line">                <span class="punctuation">]</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;port&quot;</span><span class="punctuation">:</span> <span class="number">22222</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;listen&quot;</span><span class="punctuation">:</span> <span class="string">&quot;127.0.0.1&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;protocol&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vmess&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;settings&quot;</span><span class="punctuation">:</span></span><br><span class="line">            <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;clients&quot;</span><span class="punctuation">:</span></span><br><span class="line">                <span class="punctuation">[</span></span><br><span class="line">                    <span class="punctuation">&#123;</span></span><br><span class="line">                        <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;57d47ad2-9b73-4991-a8c5-394f89522c0e&quot;</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;level&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;alterId&quot;</span><span class="punctuation">:</span> <span class="number">0</span></span><br><span class="line">                    <span class="punctuation">&#125;</span></span><br><span class="line">                <span class="punctuation">]</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;streamSettings&quot;</span><span class="punctuation">:</span> </span><br><span class="line">            <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;network&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ws&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;wsSettings&quot;</span><span class="punctuation">:</span></span><br><span class="line">                <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/fxxKThEW0r1d&quot;</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">&quot;outbounds&quot;</span><span class="punctuation">:</span></span><br><span class="line">    <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;protocol&quot;</span><span class="punctuation">:</span> <span class="string">&quot;freedom&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;settings&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;protocol&quot;</span><span class="punctuation">:</span> <span class="string">&quot;blackhole&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;settings&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;tag&quot;</span><span class="punctuation">:</span> <span class="string">&quot;blocked&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">&quot;routing&quot;</span><span class="punctuation">:</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;domainStrategy&quot;</span><span class="punctuation">:</span> <span class="string">&quot;AsIs&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;rules&quot;</span><span class="punctuation">:</span></span><br><span class="line">        <span class="punctuation">[</span></span><br><span class="line">            <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;field&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;outboundTag&quot;</span><span class="punctuation">:</span> <span class="string">&quot;block&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;protocol&quot;</span><span class="punctuation">:</span></span><br><span class="line">                <span class="punctuation">[</span></span><br><span class="line">                    <span class="string">&quot;bittorrent&quot;</span></span><br><span class="line">                <span class="punctuation">]</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>关于配置文件的几点说明：</p>
+<ul>
+<li>此配置<strong>开启了日志</strong>；</li>
+<li>此配置开启了流量嗅探，不开启嗅探没办法知道客户端在跑bt；</li>
+<li>此配置将所有的bt流量都封锁了，以免被vps提供商拒绝服务；</li>
+<li>此配置监听本地<code>127.0.0.1</code>地址的<code>22222</code>端口，且<code>127.0.0.1</code>地址无法通过外网IP直接访问；</li>
+<li>此配置中有一个用户<code>57d47ad2-9b73-4991-a8c5-394f89522c0e</code>；</li>
+<li>此配置允许在vps上通过访问<code>http://127.0.0.1:22222/fxxKThEW0r1d</code>进行<code>websocket</code>通信。</li>
+<li><a target="_blank" rel="noopener" href="https://guide.v2fly.org/">新V2Ray白话文指南</a>上提供了很多实用的v2ray配置技巧，你可以拿来学习参考。</li>
+<li><strong>我对v2ray配置的看法是，如果只是拿来翻墙用，完全没有必要了解太多，谁知道它哪天就被封了。</strong></li>
+<li><code>&quot;alterId&quot;: 0</code>这一项是当前v2ray版本的推荐配置；</li>
+<li><code>&quot;path&quot;: &quot;/fxxKThEW0r1d&quot;</code>这一项是大家推荐的使用乱码，虽然我认为这样做也没有任何意义……</li>
+<li>此配置不需要配置防火墙，因为监听的IP地址是本地IP。</li>
+</ul>
+<p>使新配置生效。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">v2ray -test</span><br><span class="line">systemctl restart v2ray</span><br></pre></td></tr></table></figure>
+
+<p>有坑列一下，能帮助一个是一个：</p>
+<ul>
+<li>如果你不用nginx做前端，而是直接让v2ray以tcp tls的方式来提供服务，需要以root身份来启动v2ray，否则会报错。因为你需要让v2ray去读取证书文件，而普通用户没有读取证书文件的权限。以root方式启动v2ray需要修改v2ray.service文件。不建议使用这种配置，被墙风险高，还给v2ray提权了。不想给v2ray提权就还老老实实的用nginx。既然都用nginx了就把websocket给加上。主要这是官方文档的锅，把v2ray的tcp tls教程放在第一篇。</li>
+</ul>
+<h3 id="整合nginx-v2ray（nginx-tls-websocket-v2ray）"><a href="#整合nginx-v2ray（nginx-tls-websocket-v2ray）" class="headerlink" title="整合nginx+v2ray（nginx+tls+websocket+v2ray）"></a>整合nginx+v2ray（nginx+tls+websocket+v2ray）</h3><p>整合nginx与v2ray的过程，就是让nginx将收到的来自公网的websocket请求转发到监听本地地址的v2ray上。</p>
+<p>你只需要<code>vi /etc/nginx/conf.d/new_site.conf</code>，在<code># 转发websocket请求到v2ray配置，开始</code>和<code># 转发websocket请求到v2ray配置，结束</code>中间的空白行上<strong>添加</strong>如下内容即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">location /fxxKThEW0r1d &#123;</span><br><span class="line">    if ($http_upgrade != &quot;websocket&quot;) &#123;</span><br><span class="line">        return 404;</span><br><span class="line">    &#125;</span><br><span class="line">    proxy_redirect off;</span><br><span class="line">    proxy_pass http://127.0.0.1:22222;</span><br><span class="line">    proxy_http_version 1.1;</span><br><span class="line">    proxy_set_header Upgrade $http_upgrade;</span><br><span class="line">    proxy_set_header Connection &quot;upgrade&quot;;</span><br><span class="line">    proxy_set_header Host $host;</span><br><span class="line">    # Show real IP in v2ray access.log</span><br><span class="line">    proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使nginx新配置生效：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nginx -t</span><br><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置Cloudflare（CDN）"><a href="#配置Cloudflare（CDN）" class="headerlink" title="配置Cloudflare（CDN）"></a>配置Cloudflare（CDN）</h3><p>终于来到了之前没来过的地方。</p>
+<p>原本是直接访问自己站点的，但是在站点前加一个cdn，我们在访问自己网站的时候会访问cdn的节点，数据由cdn提供。cdn提供的数据是它访问我们网站返回的。这样做的好处就是我们隐藏了自己网站的ip地址——我们连接的是cdn节点的ip，防火墙一般不会ban cdn的ip。</p>
+<p>为了使用cf的cdn，我们需要把nameserver换成cf提供的ns。在更换ns的过程中，需要对比原来的域名解析记录，将这些记录在cf里面补全——cf在没有成为域名指定的ns前无法获取全部的解析记录。</p>
+<p>设置完ns后，<strong>设置cf连接的加密方式为“Full SSL”，注意，不是“Full SSL (strict)”。</strong> 为了省事儿，<strong>我们不强迫使用https，允许用户访问http。</strong> 这里说的省事儿，是我还想把证书的获取工作交给Let’s Encrypt去做：cf的证书要么收费，要么还需要配置。而Let’s Encrypt的证书每3个月需要更新一次，更新的时候它会访问网站自身的http，而不是网站自身的https。如果设置cf强制转换请求为https，Let’s Encrypt可能会无法正常更新证书。</p>
+<p>配置完成cf后，我们可以验证一下网站https证书延期的功能是否正常：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">certbot renew --dry-run</span><br></pre></td></tr></table></figure>
+
+<p>关于cf配置过程中的坑记录一下：</p>
+<ul>
+<li>有人说把cloudflare workers当reverse proxy使用也可以完成网站的IP隐藏。这种不需要设置ns的方法对我诱惑挺大，但实际测试结果是无法正常访问v2ray，是不可行的。它会报错<code>[Warning] app/proxyman/outbound: failed to process outbound traffic &gt; proxy/vmess/outbound: failed to find an available destination &gt; common/retry: [transport/internet/websocket: failed to dial WebSocket &gt; transport/internet/websocket: failed to dial to (wss://hello-my-friend-365.v2ray.workers.dev/fxxKThEW0r1d): &gt; remote error: tls: handshake failure] &gt; common/retry: all retry attempts failed</code>。从报错上来看，是由于cloudflare workers使用的是cf颁发的证书，而不是我们站点自己的https证书导致的。直接使用cdn才能解决这个证书问题，因为cdn使用的是我们站点自己的证书。</li>
+</ul>
+<p>在配置cf前我还查了一些资料，放出来以防有人需要：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.xiaoben.li/p/937">在使用Cloudflare的网站上，签发Let’s Encrypt证书的问题</a></li>
+<li><a target="_blank" rel="noopener" href="https://support.cloudflare.com/hc/zh-cn/articles/214820528-%E9%AA%8C%E8%AF%81%E5%B7%B2%E5%9C%A8-Cloudflare-%E4%B8%8A%E6%BF%80%E6%B4%BB%E7%9A%84%E7%AB%99%E7%82%B9%E7%9A%84-Let-s-Encrypt-%E8%AF%81%E4%B9%A6">验证已在Cloudflare上激活的站点的Let’s Encrypt证书</a> - 这是cf官方的文章</li>
+<li><a target="_blank" rel="noopener" href="https://blog.morningp.name/2020/03/06/23.html">let’s encrypt配合cloudflare CDN使用</a> - 此人思路新奇……</li>
+</ul>
+<p>至此，cdn+nginx+tls+websocket+v2ray的配置全部完成。</p>
+<p>有人说可以通过工具优选Cloudflare CDN节点IP，进而加快v2ray的访问。我也没有尝试。</p>
+<h3 id="系统优化"><a href="#系统优化" class="headerlink" title="系统优化"></a>系统优化</h3><p>有人说配置bbr效果会比较好。可惜我一行<code>sysctl net.ipv4.tcp_congestion_control</code>下去发现搬瓦工已经默认启用bbr了。有需要的朋友自己去看<a target="_blank" rel="noopener" href="https://wiki.crowncloud.net/?How_to_enable_BBR_on_Debian_11">How to Enable BBR on Debian</a>。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>结果：还是时断时续的，而且延时（ping）加大，下载速度变慢。不过总算是不担心vps IP彻底被ban了，可以开始担心域名被干了。</p>
+<p>完成这些配置后，至少可以省下未来域名的钱，和更换IP的钱了，不算亏。</p>
+<p>为了心里更有底一点，我还下载了tor到本地，好在彻底断网的时候还能临时顶一顶，让我能够有一个窗口期去寻找新的解决办法。tor没有与v2ray配合，只是单独使用。v2ray被封的时候，配合使用也没有意义，不是么。</p>
+
+    </article>
+    <!-- license -->
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/p/20220512_install-nginx-mariadb-php-lemp-lnmp-stack.html" title="LEMP/LNMP环境搭建（Debian 11）">
+                    <div class="prevTitle">LEMP/LNMP环境搭建（Debian 11）</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- comment -->
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
+    
+</main>
+
+                <!-- profile -->
+                
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+        <div class="social">
+            
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a href="/atom.xml" class="iconfont-archer rss" target="_blank" title=rss></a>
+            
+        
+    
+
+
+        </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank" rel="external nofollow">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    
+    <!-- 不蒜子  -->
+    
+        <div class="busuanzi-container">
+            
+             
+                <span id="busuanzi_container_site_pv">本站总计访问次数：<span id="busuanzi_value_site_pv"></span></span>
+            
+        </div>
+    	
+</footer>
+
+        </div>
+        <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95"><span class="toc-number">2.</span> <span class="toc-text">操作记录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.1.</span> <span class="toc-text">重装系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Nginx%EF%BC%88nginx-tls%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">安装Nginx（nginx+tls）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#v2ray%E5%AE%89%E8%A3%85%EF%BC%88v2ray-websocket%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">v2ray安装（v2ray+websocket）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B4%E5%90%88nginx-v2ray%EF%BC%88nginx-tls-websocket-v2ray%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">整合nginx+v2ray（nginx+tls+websocket+v2ray）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AECloudflare%EF%BC%88CDN%EF%BC%89"><span class="toc-number">2.5.</span> <span class="toc-text">配置Cloudflare（CDN）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96"><span class="toc-number">2.6.</span> <span class="toc-text">系统优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+            </div>
+        
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 17
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+        
+            
+            
+            <div class="archive-year"> 2022 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/03</span>
+            <a class="archive-post-title" href="/p/20220903_v2ray%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%20(%E8%AF%B7%E6%B7%BB%E5%8A%A0%E8%BF%9E%E5%AD%97%E7%AC%A6).html">v2ray环境部署</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/12</span>
+            <a class="archive-post-title" href="/p/20220512_install-nginx-mariadb-php-lemp-lnmp-stack.html">LEMP/LNMP环境搭建（Debian 11）</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/11</span>
+            <a class="archive-post-title" href="/p/20220511_debian-11-installation-guide.html">Debian 11安装与基本配置</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2021 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span>
+            <a class="archive-post-title" href="/p/20211007_%E3%80%8A%E5%8D%A1%E7%89%87%E7%AC%94%E8%AE%B0%E5%86%99%E4%BD%9C%E6%B3%95%E3%80%8B%E9%98%85%E8%AF%BB%E4%B8%8E%E5%AE%9E%E8%B7%B5.html">《卡片笔记写作法》阅读与实践</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/13</span>
+            <a class="archive-post-title" href="/p/20210913_%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F.html">微信小程序</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span>
+            <a class="archive-post-title" href="/hardware/switch.html">Switch!</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/03</span>
+            <a class="archive-post-title" href="/p/20210903_microblog.html">空中有朵棉花糖</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/02</span>
+            <a class="archive-post-title" href="/p/20210902_%E4%BA%BA%E7%94%9F%E8%8B%A6%E7%9F%AD%E7%9A%84Python.html">人生苦短的Python</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/01</span>
+            <a class="archive-post-title" href="/p/20210901_MySQL-%E6%90%9E%E5%AE%83.html">MySQL，搞它</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/30</span>
+            <a class="archive-post-title" href="/p/20210830_%E5%88%9D%E6%AD%A5%E4%BA%86%E8%A7%A3LGBT.html">初步了解LGBT</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/25</span>
+            <a class="archive-post-title" href="/p/20210125_Resilio-Sync-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C.html">Resilio Sync 工具使用手册</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2020 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/14</span>
+            <a class="archive-post-title" href="//tsz.me/hardware/xbox-one.html">xbox one 相关记录</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/16</span>
+            <a class="archive-post-title" href="/p/20200716_my-video-production-attempts-and-thoughts.html">我的视频制作尝试与想法（2022）</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2019 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/23</span>
+            <a class="archive-post-title" href="/p/20191223_%E5%8D%9A%E5%AE%A2%E5%86%8D%E6%90%AD%E5%BB%BA.html">博客再搭建</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2016 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/09</span>
+            <a class="archive-post-title" href="/p/20160909_my-keyboards.html">我的键盘清单</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2014 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/16</span>
+            <a class="archive-post-title" href="/hardware/raspberry-pi.html">Raspberry Pi 使用记录</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/03</span>
+            <a class="archive-post-title" href="/p/20140603_%E5%81%9A%E8%8F%9C%E7%BB%83%E4%B9%A0.html">做菜练习</a>
+        </li>
+    
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+        
+            <span class="sidebar-tag-name" data-tags="技术类">
+                <span class="iconfont-archer">&#xe606;</span>
+                技术类
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="LGBT">
+                <span class="iconfont-archer">&#xe606;</span>
+                LGBT
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="跨性别">
+                <span class="iconfont-archer">&#xe606;</span>
+                跨性别
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="厌女症">
+                <span class="iconfont-archer">&#xe606;</span>
+                厌女症
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="社会排斥">
+                <span class="iconfont-archer">&#xe606;</span>
+                社会排斥
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="性别歧视">
+                <span class="iconfont-archer">&#xe606;</span>
+                性别歧视
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="女权主义">
+                <span class="iconfont-archer">&#xe606;</span>
+                女权主义
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="生活类">
+                <span class="iconfont-archer">&#xe606;</span>
+                生活类
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="吃">
+                <span class="iconfont-archer">&#xe606;</span>
+                吃
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="记录">
+                <span class="iconfont-archer">&#xe606;</span>
+                记录
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="配置">
+                <span class="iconfont-archer">&#xe606;</span>
+                配置
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="第三类">
+                <span class="iconfont-archer">&#xe606;</span>
+                第三类
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="设备">
+                <span class="iconfont-archer">&#xe606;</span>
+                设备
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="游戏主机">
+                <span class="iconfont-archer">&#xe606;</span>
+                游戏主机
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="开箱">
+                <span class="iconfont-archer">&#xe606;</span>
+                开箱
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="MySQL">
+                <span class="iconfont-archer">&#xe606;</span>
+                MySQL
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="数据库">
+                <span class="iconfont-archer">&#xe606;</span>
+                数据库
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="软件">
+                <span class="iconfont-archer">&#xe606;</span>
+                软件
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="开发">
+                <span class="iconfont-archer">&#xe606;</span>
+                开发
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="读书">
+                <span class="iconfont-archer">&#xe606;</span>
+                读书
+            </span>
+        
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="原创">
+            <span class="iconfont-archer">&#xe60a;</span>
+            原创
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_好奇">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_好奇
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_生活">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_生活
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_设备">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_设备
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_新生代农民工">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_新生代农民工
+        </span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMetaRoot = "/"
+    if (siteMetaRoot === "undefined") {
+        siteMetaRoot = '/'
+    }
+    var siteMeta = {
+        url: "https://tsz.me",
+        root: siteMetaRoot,
+        author: "Tsz Chiu Wong"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+
+        <!-- main func -->
+        <script src="/scripts/main.js?v=20211217"></script>
+        <!-- dark mode -->
+        <script src="/scripts/dark.js?v=20211217"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+        <!-- algolia -->
+        
+        <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20211217" async></script>
+        
+        <!-- mermaid -->
+        
+    </body>
+</html>

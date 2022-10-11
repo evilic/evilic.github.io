@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <!-- title -->
+
+
+    
+
+<!-- keywords -->
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Tsz Chiu Wong">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Tsz Chiu Wong">
+    
+        <meta name="keywords" content="子曰要闹闹,Tsz Chiu Wong">
+    
+    <meta name="description" content="子曰要闹闹是一个独立的博客站点。文章的内容整理了我在工作、生活中遇到的问题，和一些自己在兴趣爱好上的瞎折腾，可能偶尔还会有个读后感…我想通过输出一些非专业的零基础人员都读懂的文章来帮助自己把虚浮的知识变扎实。如果这些文章恰巧也能解决你的问题，我会很开心的。欢迎交流讨论。">
+    <meta name="description" content="购买 Xbox 是失败的。于是我给闺女又买了 Switch。 主机是在天猫国际上购买的。商品从香港发出，经澳门到国内转EMS，被税后送到我手中。前前后后大概花了十天半个月。从网络搜索结果来看，天猫国际也会发假货。拿到switch后的第一件事就是对比装主机的盒子正面的序列号与主机身上的序列号是否一致，一致后开机，看看是否出现姨妈红，进入系统后对比“设置-主机-序列号信息”，与第一步的二码是否一致。这">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Switch!">
+<meta property="og:url" content="https://tsz.me/hardware/switch.html">
+<meta property="og:site_name" content="子曰要闹闹">
+<meta property="og:description" content="购买 Xbox 是失败的。于是我给闺女又买了 Switch。 主机是在天猫国际上购买的。商品从香港发出，经澳门到国内转EMS，被税后送到我手中。前前后后大概花了十天半个月。从网络搜索结果来看，天猫国际也会发假货。拿到switch后的第一件事就是对比装主机的盒子正面的序列号与主机身上的序列号是否一致，一致后开机，看看是否出现姨妈红，进入系统后对比“设置-主机-序列号信息”，与第一步的二码是否一致。这">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-10T02:26:01.000Z">
+<meta property="article:modified_time" content="2021-09-10T02:26:01.000Z">
+<meta property="article:author" content="Tsz Chiu Wong">
+<meta property="article:tag" content="游戏主机">
+<meta property="article:tag" content="开箱">
+<meta name="twitter:card" content="summary">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/favicon.ico">
+    
+    <title>Switch! · 子曰要闹闹</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20211217" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/dark.css?v=20211217" as="style">
+    <link rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" href="/css/mobile.css?v=20211217" media="(max-width: 960px)">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js?v=20211217" as="script">
+    <link rel="preload" href="/scripts/dark.js?v=20211217" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    
+    <!-- 百度统计  -->
+    
+        <script>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement("script");
+                hm.src = "https://hm.baidu.com/hm.js?1990fe4dfe653b35b522a1c9605d7f5f";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics  -->
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-V48XQ1JMHT"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-V48XQ1JMHT');
+        </script>
+    
+    <!-- Google AdSense  -->
+    
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7265728739442747" crossorigin="anonymous"></script>
+<meta name="generator" content="Hexo 6.2.0"><link rel="alternate" href="/atom.xml" title="子曰要闹闹" type="application/atom+xml">
+</head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+    
+        <body class="post-body">
+    
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        
+            <div class="header-sidebar-menu">
+        
+            
+                <div style="padding-left: 1px;">&#xe775;</div>
+            
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href=/>子曰要闹闹</a>
+        </span>
+    </div>
+    <!-- toggle banner for post layout -->
+    
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">子曰要闹闹</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">Switch!</a>
+            </div>
+        </div>
+    
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- back to top button -->
+    <div class="footer-fixed-element">
+        
+            <div class="back-top back-top-hidden">
+        
+        
+            <div>&#xe639;</div>
+        
+        </div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="
+
+
+
+
+
+
+
+    height:50vh;
+
+">
+    
+    <!-- 主页  -->
+    
+        
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/images/header_image.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+                Switch!
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+                
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        
+        
+            
+        
+        
+        <span class="post-category" data-categories="c_设备"">
+            <i class="fas fa-folder post-category-icon"></i>
+            <span class="post-category-text">
+                c_设备
+            </span>
+        </span>
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="游戏主机">游戏主机</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="开箱">开箱</a>
+    
+</div>
+
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">2.7k</span>阅读时长: <span class="post-count reading-time">9 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2021/09/10</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <p>购买 <a href="/hardware/xbox-one.html">Xbox</a> 是失败的。于是我给闺女又买了 Switch。</p>
+<p>主机是在天猫国际上购买的。商品从香港发出，经澳门到国内转EMS，被税后送到我手中。前前后后大概花了十天半个月。从网络搜索结果来看，天猫国际也会发假货。拿到switch后的第一件事就是<code>对比装主机的盒子正面的序列号与主机身上的序列号是否一致</code>，一致后<code>开机，看看是否出现姨妈红</code>，进入系统后<code>对比“设置-主机-序列号信息”，与第一步的二码是否一致</code>。这是省略的验机步骤。如果感觉社会黑暗，可参考《<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/275598608">第一次拿到switch，怎么验货？</a>》中的高票回答进行全面验机。祝顺利上岸。</p>
+<p>拼夕夕上的主机价格也差不多，但不用赔税，可以省下一个游戏的钱；大陆直接发货，到货速度理应会快不少。如果对拼夕夕的百亿补贴有信心，可以尝试在拼夕夕上买。</p>
+<p>我是618下单的日版、花色、续航升级款。现在看价格又降了100元。你说618这种购物节平台没有宰客，我信你个大头鬼。</p>
+<p>当时没考虑国行，<del>我坚信自己爱数字版游戏比实体卡带多一些</del>。有相当多的游戏并没有实体版。作为程序猿我选择支持正版游戏，但看别人玩<strong>破解版的主机游戏依然感觉真香。</strong></p>
+<h2 id="配件"><a href="#配件" class="headerlink" title="配件"></a>配件</h2><p><strong>屏保</strong>一定要有，即使平时你的手机在裸奔。买光面还是磨砂的看个人吧。我买的是最便宜的光面。到货时屏保是碎的，最终用的是买手柄那家送的屏保……恩，屏保买别的配件时会有商家赠送。</p>
+<p><strong>MicroSDXC卡</strong>用来存放游戏。U3，C10，90MB&#x2F;s以上的读写。128跟256G的价格差别不算大，我买的256G。512G对我来说短时间内用不到，我<code>目前</code>认为128G的我都用不完。</p>
+<p><del>支持PD协议的充电器。</del> 我买的是倍思GaN 65W充电器，买回来后它并没有在switch上使用过。平时游戏的时间是晚上和节假日的下午，直接把switch放在座子上就够了……所以它现在替换了家里以前的手机慢充，以这种形式不发光、发热。如果你需要外带switch，且有最近几年的小米手机，那小米的充电器（支持12.0V1.67A输出）就能胜任switch掌机模式边玩边充电的工作，无需额外撒币。</p>
+<p>额外的Joy-Con。我、媳妇儿、俩闺女，4手柄起步，属合理添置。买的杂牌动森款。左侧手柄在挤压时有异响；腕带拆卸时异常困难，腕带的滑动锁扣被拉折了。送的屏保倒是用上了……顺手给个客观评价到tb吧。我认为Joy-Con是消耗品，WD40用不到。</p>
+<p><del>塞尔达传说荒野之息Amiibo。</del> 某宝买的，卡片形式，显然盗版的。看完这篇文章你会发现有其他方法取得这些Amiibo。</p>
+<p>目前就买了这些配件。别听一些UP主胡bb，<code>屏保、SD卡买了之后根据实际使用情况确定需求后再下单</code>是我的建议。</p>
+<h2 id="游戏"><a href="#游戏" class="headerlink" title="游戏"></a>游戏</h2><p>《<strong>Super Mario: Party</strong>》港区数字版。《超级马力欧：派对》推荐的人挺多，玩起来也还行，但我们玩的不多：家里5岁的孩子算是能理解其中的玩法，但2岁的老二可就不能了……各种捣乱，游戏无法正常进行。大人玩了两局，熟悉之后我只觉得简单、无聊。或许大人多了会好玩？疫情纪元2年，亲戚未曾团聚过。疫情后时代再看。当下认为不该买。</p>
+<p>《<strong>The Legend of Zelda: Breath of the Wild</strong>》港区数字版，未购买DLC。《塞尔达传说 旷野之息》买的不赖。一个人默默跑地图，像极了当年我在WoW中玩盗贼。到目前我在这个游戏上花费了200个小时。添加一个新账号给大闺女存档用，她挺愿意在游戏中捡道具，做饭，找呀哈哈，看望远镜，玩滑翔伞……的，打怪什么的交给我。即使我在玩，她也喜欢在旁边看着出些骚操作的主意。老二单纯喜欢在这个游戏里看天，白天晚上都无所谓……最起码能让游戏继续进行。推荐购买。</p>
+<p>上两个游戏都是我用任亏券买的，事后总结下：任亏券买商品挺划算的；如果你愿意在一台switch上登陆多个同区账号的话，直接上Nintendo Switch Online家庭会员可以云端备份所有家人的游戏存档；如果你无法提前知道家人是否喜欢&#x2F;适合这类游戏类型，<strong>卡带是你最好的选择</strong>，家人&#x2F;自己不喜欢的话出掉回血就好。</p>
+<p>国内的网络环境让游戏下载变的困难。v2ray的下载速度不及其他平台提供的switch加速器。由于没有尝试联机游戏，无法确定加速器在游戏时的网络稳定性。联通网络直连也有非常缓慢的游戏下载速度，移动网络直连无法下载。</p>
+<p>《<strong>Mario Kart 8 Deluxe</strong>》实体卡带。《马里奥赛车8：豪华版》推荐的人也不少，和跑跑卡丁车是一样的。家里俩小的都能玩，但都玩的时间不长。4人同屏的话电视机被划分的区域太小，老大闺女在玩两把后会说眼睛累。又或者是因为老输不想玩？我联网玩就总是输，常常搞到不想玩。老二就更简单了，打开游戏后把手柄放下就跑开了，游戏因此可以继续下去。这次是接受之前的教训买了实体版，但游戏次数不多的现实让我出也不是，不出也不是……算了，放在机器里面防止卡槽进灰吧。</p>
+<p>试过游戏联机了，时连时不连的。我没去确定具体原因。原本想购买《Splatoon 2（漆弹大作战2）》的，看情况放弃了。我不确定自己有时间玩，也不确定网络能畅通。在塞尔达还没玩通关的情况下额外配置加速路由器显得多余。<strong>如果我一直这样玩单机游戏，那最初直接购买破解版主机才是明智选项。</strong></p>
+<p>《<strong>Diablo III: Eternal Collection</strong>》美区数字版。《暗黑破坏神3》的购买完全是为信仰充值。我是伞兵！买它是因为它在搞特价！我在PC上玩过这个游戏，但在switch上的游戏体验完全是另一回事。switch机能啊！疫情期间买来后仅打开了一次，深深的懊悔。</p>
+<p>《<strong>Just Dance 2020</strong>》美区数字版。《舞力全开2020》是疫情期间媳妇儿让下单的，主要是她在玩。大闺女也喜欢跳，可她总拿不到第一名。常常会看到媳妇儿左手拿着自己的手柄，右手拿着大闺女的手柄在跳。老二对这个游戏不感冒。事实表明，玩游戏无法减肥。购买时在促销，游戏频次也在线，这次消费令人满意。</p>
+<p>上面两个游戏都是在低价时入手数字版的。当前switch上注册登陆了3个区的账号来买游戏，同时区分不同家庭成员的游戏存档。最开始我纠结于如何在不同大区绑定自己的PayPal或信用卡进行支付，后来发现在靠谱的商家直接下单购买兑换卡更方便。我在微信里的Jump商城购买的美区点卡。淘宝上有更便宜的卖家，我不愿意冒着ban机的风险花时间去对比他们。</p>
+<p>了解游戏价格可以使用Jump微信小程序或遊戲箱子app。</p>
+<h2 id="相关工具、资料"><a href="#相关工具、资料" class="headerlink" title="相关工具、资料"></a>相关工具、资料</h2><p>这里说两个安卓手机应用，TagMo和Joy-Con Droid。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/HiddenRamblings/TagMo/releases">TagMo</a> 让用户可以通过手机的NFC直接读取或写入amiibo。先说读取，读取时需要用到的加密key(unfixed-info.bin和locked-secret.bin)可以从<a href="/res/TagMo_Key.zip">我的存档</a>中下载。网上很多人提到的amiibo数据下载站<code>nfc-bank.com</code>我无法打开，这个网站大概率挂掉了。不过有人收集了amiibo数据其他的下载链接，这个不难找。购买NTAG215白卡，通过应用向里面写数据我没有测试。我想起来找这类软件的时候已经下单了我想要的塞尔达amiibo……（我还为别的需求买了PM3）我买的amiibo卡片的提取数据在<a href="/res/Zelda_Amiibo_Data_25.zip">这里</a>。</p>
+<p><a target="_blank" rel="noopener" href="https://apkpure.com/joycon-droid-requires-root-magisk/com.rdapps.gamepad">Joy-Con Droid</a> 需要手机的ROOT权限，它可以让你的手机当做Joy-Con来使用。从<a target="_blank" rel="noopener" href="https://joycon.gitbook.io/joycondroid/guide/using-amiibo-files">文档</a>上来看，某些受支持的机器还可以直接模拟读取到了amiibo，这样你甚至都不用写ntag215卡片，只要安心下载amiibo数据就好。</p>
+<p>还有一些其他资料，链接一并放在这里：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/dekuNukem/Nintendo_Switch_Reverse_Engineering">Nintendo_Switch_Reverse_Engineering</a> - Switch 逆向工程</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mumumusuc/bluez-ns-controller">bluez-ns-controller</a> - 使用bluez模拟Nintendo Switch的Pro手柄</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/wchill/SwitchInputEmulator">SwitchInputEmulator</a> - 通过Arduino模拟手柄。<strong>塞尔达刷古代核心时需要不断点击A键进行拾取，我的手快废了。有必要了解这个项目实现宏录制。</strong></li>
+</ul>
+<p>到此，我深深地感受到我是正版用户的受害者。正版的switch不支持串流，我无法通过手机+蓝牙手柄随时随地玩耍。如果我想做到这些，我需要再买个Switch Lite，或者买个包包带着switch和充电器，或者<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1aE411D7Dd">买个采集卡</a>（<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV15J411U7ne">实现</a>）……</p>
+<p>再放几个相关Channel：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/user/amu0813">AMU Game Channel</a> - 游戏录制</li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/channel/UCAQmUESq4GxO1b_iBCrYlTA">Dio Chan</a> - switch种草</li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/c/weiweigames">魏巍</a> - 很有礼貌的样子</li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/channel/UCvUJ6BwgUGWBHuUd0cv546g">小宁子</a> - 长的好看</li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/channel/UCUVpqH9jl41gS2sjFBZiIFQ">短发塞尔达</a> - 搞</li>
+<li>……</li>
+</ul>
+<h2 id="费用清单"><a href="#费用清单" class="headerlink" title="费用清单"></a>费用清单</h2><ul>
+<li>主机1962.99（标价2699元，400元优惠券，被税后商家退税费336.01元）</li>
+<li>税费336.01（税款273元，服务费50元，通知单邮寄费12元，手续费1.01元）</li>
+</ul>
+<p>小计：2299</p>
+<ul>
+<li>配件586.6（存储卡199元，充电器118元，手柄258元，屏保11.6元）</li>
+</ul>
+<p>小计：586.6</p>
+<ul>
+<li>Nintendo Switch Online 会员，129.76元（155港币，2021年，购买任亏券得是会员）</li>
+<li>港区任亏券，543.32元（649港币，超级马力欧派对、塞尔达旷野之息）</li>
+<li>塞尔达amiibo 25张，29元</li>
+<li>马里奥赛车8，315元</li>
+<li>暗黑破坏神3，192元（29.99美元）</li>
+<li>舞力全开2020，107.01元（16.47美元）</li>
+</ul>
+<h2 id="游戏攻略"><a href="#游戏攻略" class="headerlink" title="游戏攻略"></a>游戏攻略</h2><h3 id="塞尔达旷野之息"><a href="#塞尔达旷野之息" class="headerlink" title="塞尔达旷野之息"></a>塞尔达旷野之息</h3><p>未来再整理吧，我还没有营救公主的计划。</p>
+
+    </article>
+    <!-- license -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://tsz.me">Tsz Chiu Wong</a>
+            <p>原文链接：<a href="https://tsz.me/hardware/switch.html">https://tsz.me/hardware/switch.html</a>
+            <p>发表日期：<a href="https://tsz.me/hardware/switch.html">2021年09月10日 10时26分01秒</a>
+            <p>更新日期：<a href="https://tsz.me/hardware/switch.html">2021年09月10日 10时26分01秒</a>
+            <p>版权声明：本博客所有标注原创的文章除特别声明外，均采用<a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA</a>许可协议。转载请注明出处。</p>
+        </div>
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href="/p/20210913_%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F.html" title="微信小程序">
+                    <div class="nextTitle">微信小程序</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/p/20210903_microblog.html" title="空中有朵棉花糖">
+                    <div class="prevTitle">空中有朵棉花糖</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- comment -->
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
+    
+</main>
+
+                <!-- profile -->
+                
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+        <div class="social">
+            
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a href="/atom.xml" class="iconfont-archer rss" target="_blank" title=rss></a>
+            
+        
+    
+
+
+        </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank" rel="external nofollow">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    
+    <!-- 不蒜子  -->
+    
+        <div class="busuanzi-container">
+            
+             
+                <span id="busuanzi_container_site_pv">本站总计访问次数：<span id="busuanzi_value_site_pv"></span></span>
+            
+        </div>
+    	
+</footer>
+
+        </div>
+        <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">配件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F"><span class="toc-number">2.</span> <span class="toc-text">游戏</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E5%B7%A5%E5%85%B7%E3%80%81%E8%B5%84%E6%96%99"><span class="toc-number">3.</span> <span class="toc-text">相关工具、资料</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%B9%E7%94%A8%E6%B8%85%E5%8D%95"><span class="toc-number">4.</span> <span class="toc-text">费用清单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E6%94%BB%E7%95%A5"><span class="toc-number">5.</span> <span class="toc-text">游戏攻略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A1%9E%E5%B0%94%E8%BE%BE%E6%97%B7%E9%87%8E%E4%B9%8B%E6%81%AF"><span class="toc-number">5.1.</span> <span class="toc-text">塞尔达旷野之息</span></a></li></ol></li></ol>
+            </div>
+        
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 17
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+        
+            
+            
+            <div class="archive-year"> 2022 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/03</span>
+            <a class="archive-post-title" href="/p/20220903_v2ray%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%20(%E8%AF%B7%E6%B7%BB%E5%8A%A0%E8%BF%9E%E5%AD%97%E7%AC%A6).html">v2ray环境部署</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/12</span>
+            <a class="archive-post-title" href="/p/20220512_install-nginx-mariadb-php-lemp-lnmp-stack.html">LEMP/LNMP环境搭建（Debian 11）</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/11</span>
+            <a class="archive-post-title" href="/p/20220511_debian-11-installation-guide.html">Debian 11安装与基本配置</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2021 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span>
+            <a class="archive-post-title" href="/p/20211007_%E3%80%8A%E5%8D%A1%E7%89%87%E7%AC%94%E8%AE%B0%E5%86%99%E4%BD%9C%E6%B3%95%E3%80%8B%E9%98%85%E8%AF%BB%E4%B8%8E%E5%AE%9E%E8%B7%B5.html">《卡片笔记写作法》阅读与实践</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/13</span>
+            <a class="archive-post-title" href="/p/20210913_%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F.html">微信小程序</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span>
+            <a class="archive-post-title" href="/hardware/switch.html">Switch!</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/03</span>
+            <a class="archive-post-title" href="/p/20210903_microblog.html">空中有朵棉花糖</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/02</span>
+            <a class="archive-post-title" href="/p/20210902_%E4%BA%BA%E7%94%9F%E8%8B%A6%E7%9F%AD%E7%9A%84Python.html">人生苦短的Python</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/01</span>
+            <a class="archive-post-title" href="/p/20210901_MySQL-%E6%90%9E%E5%AE%83.html">MySQL，搞它</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/30</span>
+            <a class="archive-post-title" href="/p/20210830_%E5%88%9D%E6%AD%A5%E4%BA%86%E8%A7%A3LGBT.html">初步了解LGBT</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/25</span>
+            <a class="archive-post-title" href="/p/20210125_Resilio-Sync-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C.html">Resilio Sync 工具使用手册</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2020 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/14</span>
+            <a class="archive-post-title" href="//tsz.me/hardware/xbox-one.html">xbox one 相关记录</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/16</span>
+            <a class="archive-post-title" href="/p/20200716_my-video-production-attempts-and-thoughts.html">我的视频制作尝试与想法（2022）</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2019 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/23</span>
+            <a class="archive-post-title" href="/p/20191223_%E5%8D%9A%E5%AE%A2%E5%86%8D%E6%90%AD%E5%BB%BA.html">博客再搭建</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2016 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/09</span>
+            <a class="archive-post-title" href="/p/20160909_my-keyboards.html">我的键盘清单</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2014 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/16</span>
+            <a class="archive-post-title" href="/hardware/raspberry-pi.html">Raspberry Pi 使用记录</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/03</span>
+            <a class="archive-post-title" href="/p/20140603_%E5%81%9A%E8%8F%9C%E7%BB%83%E4%B9%A0.html">做菜练习</a>
+        </li>
+    
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+        
+            <span class="sidebar-tag-name" data-tags="技术类">
+                <span class="iconfont-archer">&#xe606;</span>
+                技术类
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="LGBT">
+                <span class="iconfont-archer">&#xe606;</span>
+                LGBT
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="跨性别">
+                <span class="iconfont-archer">&#xe606;</span>
+                跨性别
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="厌女症">
+                <span class="iconfont-archer">&#xe606;</span>
+                厌女症
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="社会排斥">
+                <span class="iconfont-archer">&#xe606;</span>
+                社会排斥
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="性别歧视">
+                <span class="iconfont-archer">&#xe606;</span>
+                性别歧视
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="女权主义">
+                <span class="iconfont-archer">&#xe606;</span>
+                女权主义
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="生活类">
+                <span class="iconfont-archer">&#xe606;</span>
+                生活类
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="吃">
+                <span class="iconfont-archer">&#xe606;</span>
+                吃
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="记录">
+                <span class="iconfont-archer">&#xe606;</span>
+                记录
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="配置">
+                <span class="iconfont-archer">&#xe606;</span>
+                配置
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="第三类">
+                <span class="iconfont-archer">&#xe606;</span>
+                第三类
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="设备">
+                <span class="iconfont-archer">&#xe606;</span>
+                设备
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="游戏主机">
+                <span class="iconfont-archer">&#xe606;</span>
+                游戏主机
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="开箱">
+                <span class="iconfont-archer">&#xe606;</span>
+                开箱
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="MySQL">
+                <span class="iconfont-archer">&#xe606;</span>
+                MySQL
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="数据库">
+                <span class="iconfont-archer">&#xe606;</span>
+                数据库
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="软件">
+                <span class="iconfont-archer">&#xe606;</span>
+                软件
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="开发">
+                <span class="iconfont-archer">&#xe606;</span>
+                开发
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="读书">
+                <span class="iconfont-archer">&#xe606;</span>
+                读书
+            </span>
+        
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="原创">
+            <span class="iconfont-archer">&#xe60a;</span>
+            原创
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_好奇">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_好奇
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_生活">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_生活
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_设备">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_设备
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_新生代农民工">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_新生代农民工
+        </span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMetaRoot = "/"
+    if (siteMetaRoot === "undefined") {
+        siteMetaRoot = '/'
+    }
+    var siteMeta = {
+        url: "https://tsz.me",
+        root: siteMetaRoot,
+        author: "Tsz Chiu Wong"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+
+        <!-- main func -->
+        <script src="/scripts/main.js?v=20211217"></script>
+        <!-- dark mode -->
+        <script src="/scripts/dark.js?v=20211217"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+        <!-- algolia -->
+        
+        <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20211217" async></script>
+        
+        <!-- mermaid -->
+        
+    </body>
+</html>

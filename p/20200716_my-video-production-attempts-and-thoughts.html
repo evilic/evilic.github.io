@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <!-- title -->
+
+
+    
+
+<!-- keywords -->
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Tsz Chiu Wong">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Tsz Chiu Wong">
+    
+        <meta name="keywords" content="视频制作,副业挣钱,视频副业,视频挣钱,video production,子曰要闹闹,Tsz Chiu Wong">
+    
+    <meta name="description" content="子曰要闹闹是一个独立的博客站点。文章的内容整理了我在工作、生活中遇到的问题，和一些自己在兴趣爱好上的瞎折腾，可能偶尔还会有个读后感…我想通过输出一些非专业的零基础人员都读懂的文章来帮助自己把虚浮的知识变扎实。如果这些文章恰巧也能解决你的问题，我会很开心的。欢迎交流讨论。">
+    <meta name="description" content="本文记录了我在2020年尝试进行视频制作的相关资料，也梳理了我在2022年对视频副业的想法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我的视频制作尝试与想法（2022）">
+<meta property="og:url" content="https://tsz.me/p/20200716_my-video-production-attempts-and-thoughts.html">
+<meta property="og:site_name" content="子曰要闹闹">
+<meta property="og:description" content="本文记录了我在2020年尝试进行视频制作的相关资料，也梳理了我在2022年对视频副业的想法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tsz.me/images/sohu_zhang_chaoyang.png">
+<meta property="article:published_time" content="2020-07-16T02:17:48.000Z">
+<meta property="article:modified_time" content="2022-05-18T16:52:21.000Z">
+<meta property="article:author" content="Tsz Chiu Wong">
+<meta property="article:tag" content="第三类">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tsz.me/images/sohu_zhang_chaoyang.png">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/favicon.ico">
+    
+    <title>我的视频制作尝试与想法（2022） · 子曰要闹闹</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20211217" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/dark.css?v=20211217" as="style">
+    <link rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" href="/css/mobile.css?v=20211217" media="(max-width: 960px)">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js?v=20211217" as="script">
+    <link rel="preload" href="/scripts/dark.js?v=20211217" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    
+    <!-- 百度统计  -->
+    
+        <script>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement("script");
+                hm.src = "https://hm.baidu.com/hm.js?1990fe4dfe653b35b522a1c9605d7f5f";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics  -->
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-V48XQ1JMHT"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-V48XQ1JMHT');
+        </script>
+    
+    <!-- Google AdSense  -->
+    
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7265728739442747" crossorigin="anonymous"></script>
+<meta name="generator" content="Hexo 6.2.0"><link rel="alternate" href="/atom.xml" title="子曰要闹闹" type="application/atom+xml">
+</head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+    
+        <body class="post-body">
+    
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        
+            <div class="header-sidebar-menu">
+        
+            
+                <div style="padding-left: 1px;">&#xe775;</div>
+            
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href=/>子曰要闹闹</a>
+        </span>
+    </div>
+    <!-- toggle banner for post layout -->
+    
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">子曰要闹闹</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">我的视频制作尝试与想法（2022）</a>
+            </div>
+        </div>
+    
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- back to top button -->
+    <div class="footer-fixed-element">
+        
+            <div class="back-top back-top-hidden">
+        
+        
+            <div>&#xe639;</div>
+        
+        </div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="
+
+
+
+
+
+
+
+    height:50vh;
+
+">
+    
+    <!-- 主页  -->
+    
+        
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/images/the-gentlemen-film-poster.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+                我的视频制作尝试与想法（2022）
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+                
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        
+        
+            
+        
+        
+        <span class="post-category" data-categories="原创"">
+            <i class="fas fa-folder post-category-icon"></i>
+            <span class="post-category-text">
+                原创
+            </span>
+        </span>
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="第三类">第三类</a>
+    
+</div>
+
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">2.6k</span>阅读时长: <span class="post-count reading-time">8 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2020/07/16</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <h2 id="我对视频副业的想法（22-x2F-5-x2F-19）"><a href="#我对视频副业的想法（22-x2F-5-x2F-19）" class="headerlink" title="我对视频副业的想法（22&#x2F;5&#x2F;19）"></a>我对视频副业的想法（22&#x2F;5&#x2F;19）</h2><p>2020年那会儿，伴随着抖音B站的发展，视频（制作）行业好像一头在风口飞起的猪。我也是从那儿开始自学了一些Pr，想做个电影解说频道。我只做了一期，糟糕的后台数据让我充满挫败感。今年（2022年）中国经济下行的压力逼迫我重新审视开展视频副业的可能。根据近半个月的了解，我来说说我对视频某些方面的看法。</p>
+<p>首先要说的是，视频是什么？与其说视频是种呈现方式，不如说<strong>它是一个工具。</strong>呈现方式仅仅是将它用作内容传播工具时的作用。这个问题其实就是你对视频制作的定位，定位很重要——你交女朋友时如果不以结婚为目的，就容易被人当作渣男。显然，我希望将它用作撑大钱包的工具，它得挣钱。</p>
+<p>接下来就要确定它到底能不能撑大钱包了，看看这个行业的盈利模式。这<a target="_blank" rel="noopener" href="https://m.mydrivers.com/newsview/831953.html">有篇文章</a>你看看，它总结了B站做up主的主要收入来源：</p>
+<ol>
+<li><del>平台发钱；</del>钱很少忽略不计</li>
+<li>接广告打广告；前期粉少，需要自己用爱发电</li>
+<li>自己承接流量转化变现工作；<strong>要求个人能力</strong></li>
+</ol>
+<p>我对这三点的总结：你可以<strong>把你的粉丝看做你的私域流量，但你要这些流量干什么还得自己先想好。</strong>在没想好这个问题之前，你可以先学着视频剪辑，但也不要忘了张朝阳的那句劝：「不要过度努力工作，因为世界不公平，方向错了会伤身体」。</p>
+<p><img src="/images/sohu_zhang_chaoyang.png" alt="视频制作也是不公平的"></p>
+<p>对于这个问题，我当前很困惑，找不到答案。如果你有想法，不妨一起聊聊。关于视频副业的其他问题，等我后续找到方向时再来补充。</p>
+<h2 id="第一次尝试过程记录（2020-x2F-07-x2F-16）"><a href="#第一次尝试过程记录（2020-x2F-07-x2F-16）" class="headerlink" title="第一次尝试过程记录（2020&#x2F;07&#x2F;16）"></a>第一次尝试过程记录（2020&#x2F;07&#x2F;16）</h2><h3 id="文案"><a href="#文案" class="headerlink" title="文案"></a>文案</h3><p>大家好，这里是……</p>
+<p>今天我们一起来看一部由盖·里奇执导，于2020年上映的犯罪题材影片《绅士们》。<br>本片采用多线叙事的方式，层层反转、为了方便大家观赏，我们采用正向的方式进行讲述。</p>
+<p>米奇是一名美国人，聪明且穷。<br>他在英国读大学期间，通过销售大麻给家境富裕的同学，外加些硬核的操作，最终红手起家，逐步在欧洲大地上建立起一个年种植50吨、净利润过亿英镑的大麻帝国。<br>随着英国政府准备将大麻合法化，有过非法行为的他担心政府翻起旧账，便想借此机会退出圈子，从此和媳妇儿一起去安享生活。</p>
+<p>要想在英国这片不大的土地上，年产50吨大麻，米奇也是另辟蹊径：<br>他在英国的几千个庄园中，选出12个没落贵族，通过每年提供一百万英镑佣金和额外服务，来换取这些勋爵场地的地下使用权，来进行大麻的种植活动。</p>
+<p>曾经在一次聚会上，《每日邮报》的主编戴夫上前与米奇打招呼，但由于此主编曾报道过一位与米奇有过合作的贵族出轨同性男仆，导致该贵族最终事业沉寂、妻离子散，所以米奇并未鸟他。这让主编备感丢人，从而决定以15万的价格聘用私人侦探弗莱彻，来挖掘米奇的黑料，以期毁掉米奇。</p>
+<p>米奇在一次高端饭局上，结识了犹太人马修。马修希望购买米奇的整个产业，对此，米奇将包括场所、工人、技术在内的基础建设和整个分销网络打包，报价4亿英镑。</p>
+<p>犹太人马修尽管觉得4亿价格非常公道，却仍然希望能够通过使用手段来压低价格。于是他找到了中国人干眼。<br>干眼是卖白粉的乔治的手下，他充满了野心，是一名后起之秀。他在接到了马修的指示后，不仅背着他的首领乔治，同时还背着马修，透过米奇妻子的引见，直接与米奇面对面的坐下来，提出想要接手米奇生意的想法。<br>可是米奇出于产业已打算出售给马修的原因，拒绝了干眼的提议。</p>
+<p>之后，米奇的农场遭到了几名搏击运动员的骚扰，原本用于交付给马修的400箱大麻也被搬走了。<br>至于整个抢劫的过程，还被运动员们制作成了视频上传到了网络。<code>（rap 剪辑 爽片）</code><br>网络的曝光使得米奇的不得不关闭了该农场，同时米奇也找来马修，希望消除马修的疑虑。<br>马修在此时将一把小手枪送给了米奇，寓意让米奇稳住当前的局面。</p>
+<p>同时，一个与米奇有合作的贵族，他的女儿劳拉由于自我憎恨，离家出走，与一群坏家伙混在了一起，开始了海洛因的吸食。米奇决定帮助这位伙伴找回他的女儿。<br>米奇的助理——雷在即将顺利接回劳拉的时候出现了意外，一个人名叫阿斯兰的男子在相互推搡中跌出了窗户，这一幕同时被私家侦探、路边的小混混拍摄了下来。<br>雷一行人只得花费额外的精力从混混手中抢夺回来对方的手机，并将阿斯兰的尸体暂时放置到了雷家中的冰柜里。<br>此时，雷还不清楚，阿斯兰是一名俄罗斯寡头政治家的孩子。<code>（想拿钱买 绅士拿钱买，最终只得动用武力）4&#39;</code></p>
+<p>当运动员的教练在得知整个事件的始末后，他带着运动员们接触的中间人法克，来到了米奇助理雷的地盘，主动道歉，并表示愿意归还货物，同时愿意作出补偿，以换取米奇放过这些孩子。<br>就这样，通过中间人法克，米奇知道了，他的场子是干眼打掉的。</p>
+<p>雷带回来的劳拉最终因为海洛因死去了。<br>此时米奇也找上了干眼的首领乔治，烧毁了他的白粉作坊和其中的货物，同时用枪抵着乔治的头，警告乔治抢地盘的过火行为。</p>
+<p>懵逼的乔治事后自然要去找干眼对质，干眼承认了自己的所作所为，并表示乔治属于前浪，被拍死在沙滩上才是正确的归宿。<br>乔治下令消除干眼的存在，不料手下却也被干眼收买，最终乔治背对着干眼，死在了下属手中。</p>
+<p>乔治葬礼结束了。<br>米奇在餐厅遇到了俄国人派出的杀手，所幸雷及时出现，从后面将杀手爆头。<br>干眼则带着两名小弟来到米奇妻子的公司，希望将她挟持用作和米奇谈判的筹码。不料，这个狂野的女子使用马修之前赠送的手枪，干净利落的干掉了这两名手下。在子弹使用完毕后，米妻被干眼按在了桌子上，愤怒之余准备干一些羞羞的事。不巧的是，米奇此时赶到了这里，用不同的方式，让干眼一发入魂。<code>（龙头 巩固地位 想自立门户）</code></p>
+<p>主编找来的私家侦探在调查了事情的始末后，主动找上了雷。他希望能够以2000万的价格，将他掌握的消息卖给雷，来得到比15万更丰厚的利润。他给出了72小时的时间，让雷去思考这笔买卖。<br>然而侦探却不知道，雷早已知道他在暗地进行调查，并且偷偷的在他的鞋中放入追踪器。在3天的时间里，雷让教练帮他找全了侦探额外留下用来当作保险的文档副本，同时还直接劫持了主编，通过给主编下药的方式，给主编拍下了与猪一起嘿嘿嘿的不雅视频……<br>另一方面，雷却不知道，侦探在卖消息给他之前，已经把消息卖给了俄国人，所以之前才会遇到俄国杀手……</p>
+<p>侦探的调查，让米奇终于发现，整个事件背后的主谋就是犹太人马修。<br>本着“要成为王者，就不能迟疑”信念的米奇，要求马修为此支付2.7亿和身上的一磅肉作为补偿。</p>
+<p>当这一切都处理完成后，米奇和雷分别遇到了俄国人派出的第二波杀手。<br>幸运的是，教练及其手下的运动员们，最终分别救下了他们。<br>而侦探也在打斗中，逃离了出去，继续去兜售这一系列事件富有戏剧色彩的剧情。</p>
+<p>本片是观众熟悉的犯罪题材影片，带有导演自己的明显风格，阵容也堪称豪华。<br>虽然全球票房遇冷，但在口碑上却以8.3的评分连续数周入选豆瓣口碑榜。<br>全片随侦探的叙述推进，黑色幽默贯穿始终。角色们“猎人”和“猎物”的身份不断变换，让剧情充满悬疑。<br>且不说影片讲述的故事，单从学习角色们英伦风的穿衣打扮来讲，影片就值得一看。</p>
+<p>好了，感谢大家本期的收看。欢迎大家留言吐槽……也欢迎订阅本频道，持续吐槽~<br>我们下期再见。</p>
+<h3 id="视频链接及效果"><a href="#视频链接及效果" class="headerlink" title="视频链接及效果"></a>视频链接及效果</h3><p>&#x3D;&gt; 链接在此：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=EcPujPcfxpY">vol.1.遇到中年危機的毒販不如意的退休之路 觀電影《紳士們&#x2F;瘋狂紳士幫&#x2F;紳士追殺令》</a><br>&#x3D;&gt; 视频效果：遇到电影的版权声明，<strong>YouTube黄标，限制播放。</strong>然后就没有然后了……</p>
+<h3 id="视频制作过程中遇到的问题及解决"><a href="#视频制作过程中遇到的问题及解决" class="headerlink" title="视频制作过程中遇到的问题及解决"></a>视频制作过程中遇到的问题及解决</h3><p>等有人看的时候再来聊这个吧……显然，这不是我给自己挖的坑——我不认为会有人看。</p>
+
+    </article>
+    <!-- license -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://tsz.me">Tsz Chiu Wong</a>
+            <p>原文链接：<a href="https://tsz.me/p/20200716_my-video-production-attempts-and-thoughts.html">https://tsz.me/p/20200716_my-video-production-attempts-and-thoughts.html</a>
+            <p>发表日期：<a href="https://tsz.me/p/20200716_my-video-production-attempts-and-thoughts.html">2020年07月16日 10时17分48秒</a>
+            <p>更新日期：<a href="https://tsz.me/p/20200716_my-video-production-attempts-and-thoughts.html">2022年05月19日 00时52分21秒</a>
+            <p>版权声明：本博客所有标注原创的文章除特别声明外，均采用<a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA</a>许可协议。转载请注明出处。</p>
+        </div>
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href="//tsz.me/hardware/xbox-one.html" title="xbox one 相关记录">
+                    <div class="nextTitle">xbox one 相关记录</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/p/20191223_%E5%8D%9A%E5%AE%A2%E5%86%8D%E6%90%AD%E5%BB%BA.html" title="博客再搭建">
+                    <div class="prevTitle">博客再搭建</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- comment -->
+    
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+
+            
+
+            
+
+            
+
+            <!-- utteranc评论 -->
+
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+
+            
+            
+
+            
+
+        </div>
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
+    
+</main>
+
+                <!-- profile -->
+                
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+        <div class="social">
+            
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a href="/atom.xml" class="iconfont-archer rss" target="_blank" title=rss></a>
+            
+        
+    
+
+
+        </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank" rel="external nofollow">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    
+    <!-- 不蒜子  -->
+    
+        <div class="busuanzi-container">
+            
+             
+                <span id="busuanzi_container_site_pv">本站总计访问次数：<span id="busuanzi_value_site_pv"></span></span>
+            
+        </div>
+    	
+</footer>
+
+        </div>
+        <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E5%AF%B9%E8%A7%86%E9%A2%91%E5%89%AF%E4%B8%9A%E7%9A%84%E6%83%B3%E6%B3%95%EF%BC%8822-x2F-5-x2F-19%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">我对视频副业的想法（22&#x2F;5&#x2F;19）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%B0%9D%E8%AF%95%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%EF%BC%882020-x2F-07-x2F-16%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">第一次尝试过程记录（2020&#x2F;07&#x2F;16）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%A1%88"><span class="toc-number">2.1.</span> <span class="toc-text">文案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%86%E9%A2%91%E9%93%BE%E6%8E%A5%E5%8F%8A%E6%95%88%E6%9E%9C"><span class="toc-number">2.2.</span> <span class="toc-text">视频链接及效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%86%E9%A2%91%E5%88%B6%E4%BD%9C%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3"><span class="toc-number">2.3.</span> <span class="toc-text">视频制作过程中遇到的问题及解决</span></a></li></ol></li></ol>
+            </div>
+        
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 17
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+        
+            
+            
+            <div class="archive-year"> 2022 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/03</span>
+            <a class="archive-post-title" href="/p/20220903_v2ray%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%20(%E8%AF%B7%E6%B7%BB%E5%8A%A0%E8%BF%9E%E5%AD%97%E7%AC%A6).html">v2ray环境部署</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/12</span>
+            <a class="archive-post-title" href="/p/20220512_install-nginx-mariadb-php-lemp-lnmp-stack.html">LEMP/LNMP环境搭建（Debian 11）</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/11</span>
+            <a class="archive-post-title" href="/p/20220511_debian-11-installation-guide.html">Debian 11安装与基本配置</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2021 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span>
+            <a class="archive-post-title" href="/p/20211007_%E3%80%8A%E5%8D%A1%E7%89%87%E7%AC%94%E8%AE%B0%E5%86%99%E4%BD%9C%E6%B3%95%E3%80%8B%E9%98%85%E8%AF%BB%E4%B8%8E%E5%AE%9E%E8%B7%B5.html">《卡片笔记写作法》阅读与实践</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/13</span>
+            <a class="archive-post-title" href="/p/20210913_%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F.html">微信小程序</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span>
+            <a class="archive-post-title" href="/hardware/switch.html">Switch!</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/03</span>
+            <a class="archive-post-title" href="/p/20210903_microblog.html">空中有朵棉花糖</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/02</span>
+            <a class="archive-post-title" href="/p/20210902_%E4%BA%BA%E7%94%9F%E8%8B%A6%E7%9F%AD%E7%9A%84Python.html">人生苦短的Python</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/01</span>
+            <a class="archive-post-title" href="/p/20210901_MySQL-%E6%90%9E%E5%AE%83.html">MySQL，搞它</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/30</span>
+            <a class="archive-post-title" href="/p/20210830_%E5%88%9D%E6%AD%A5%E4%BA%86%E8%A7%A3LGBT.html">初步了解LGBT</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/25</span>
+            <a class="archive-post-title" href="/p/20210125_Resilio-Sync-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C.html">Resilio Sync 工具使用手册</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2020 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/14</span>
+            <a class="archive-post-title" href="//tsz.me/hardware/xbox-one.html">xbox one 相关记录</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/16</span>
+            <a class="archive-post-title" href="/p/20200716_my-video-production-attempts-and-thoughts.html">我的视频制作尝试与想法（2022）</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2019 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/23</span>
+            <a class="archive-post-title" href="/p/20191223_%E5%8D%9A%E5%AE%A2%E5%86%8D%E6%90%AD%E5%BB%BA.html">博客再搭建</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2016 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/09</span>
+            <a class="archive-post-title" href="/p/20160909_my-keyboards.html">我的键盘清单</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2014 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/16</span>
+            <a class="archive-post-title" href="/hardware/raspberry-pi.html">Raspberry Pi 使用记录</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/03</span>
+            <a class="archive-post-title" href="/p/20140603_%E5%81%9A%E8%8F%9C%E7%BB%83%E4%B9%A0.html">做菜练习</a>
+        </li>
+    
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+        
+            <span class="sidebar-tag-name" data-tags="技术类">
+                <span class="iconfont-archer">&#xe606;</span>
+                技术类
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="LGBT">
+                <span class="iconfont-archer">&#xe606;</span>
+                LGBT
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="跨性别">
+                <span class="iconfont-archer">&#xe606;</span>
+                跨性别
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="厌女症">
+                <span class="iconfont-archer">&#xe606;</span>
+                厌女症
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="社会排斥">
+                <span class="iconfont-archer">&#xe606;</span>
+                社会排斥
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="性别歧视">
+                <span class="iconfont-archer">&#xe606;</span>
+                性别歧视
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="女权主义">
+                <span class="iconfont-archer">&#xe606;</span>
+                女权主义
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="生活类">
+                <span class="iconfont-archer">&#xe606;</span>
+                生活类
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="吃">
+                <span class="iconfont-archer">&#xe606;</span>
+                吃
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="记录">
+                <span class="iconfont-archer">&#xe606;</span>
+                记录
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="配置">
+                <span class="iconfont-archer">&#xe606;</span>
+                配置
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="第三类">
+                <span class="iconfont-archer">&#xe606;</span>
+                第三类
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="设备">
+                <span class="iconfont-archer">&#xe606;</span>
+                设备
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="游戏主机">
+                <span class="iconfont-archer">&#xe606;</span>
+                游戏主机
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="开箱">
+                <span class="iconfont-archer">&#xe606;</span>
+                开箱
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="MySQL">
+                <span class="iconfont-archer">&#xe606;</span>
+                MySQL
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="数据库">
+                <span class="iconfont-archer">&#xe606;</span>
+                数据库
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="软件">
+                <span class="iconfont-archer">&#xe606;</span>
+                软件
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="开发">
+                <span class="iconfont-archer">&#xe606;</span>
+                开发
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="读书">
+                <span class="iconfont-archer">&#xe606;</span>
+                读书
+            </span>
+        
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="原创">
+            <span class="iconfont-archer">&#xe60a;</span>
+            原创
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_好奇">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_好奇
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_生活">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_生活
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_设备">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_设备
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_新生代农民工">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_新生代农民工
+        </span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMetaRoot = "/"
+    if (siteMetaRoot === "undefined") {
+        siteMetaRoot = '/'
+    }
+    var siteMeta = {
+        url: "https://tsz.me",
+        root: siteMetaRoot,
+        author: "Tsz Chiu Wong"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+
+        <!-- main func -->
+        <script src="/scripts/main.js?v=20211217"></script>
+        <!-- dark mode -->
+        <script src="/scripts/dark.js?v=20211217"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+        <!-- algolia -->
+        
+        <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20211217" async></script>
+        
+        <!-- mermaid -->
+        
+    </body>
+</html>

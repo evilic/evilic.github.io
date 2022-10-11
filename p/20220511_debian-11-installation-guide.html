@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <!-- title -->
+
+
+    
+
+<!-- keywords -->
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Tsz Chiu Wong">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Tsz Chiu Wong">
+    
+        <meta name="keywords" content="Debian 11安装,debian 11 installation guide,debian 11,Debian配置,子曰要闹闹,Tsz Chiu Wong">
+    
+    <meta name="description" content="子曰要闹闹是一个独立的博客站点。文章的内容整理了我在工作、生活中遇到的问题，和一些自己在兴趣爱好上的瞎折腾，可能偶尔还会有个读后感…我想通过输出一些非专业的零基础人员都读懂的文章来帮助自己把虚浮的知识变扎实。如果这些文章恰巧也能解决你的问题，我会很开心的。欢迎交流讨论。">
+    <meta name="description" content="手把手保姆级的Debian 11安装教程。逐步演示如何使用Debian 11的普通镜像进行Debian 11的安装，并在安装完成后对系统进行一些基本的易用性配置，如添加sudo，配置alias等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Debian 11安装与基本配置">
+<meta property="og:url" content="https://tsz.me/p/20220511_debian-11-installation-guide.html">
+<meta property="og:site_name" content="子曰要闹闹">
+<meta property="og:description" content="手把手保姆级的Debian 11安装教程。逐步演示如何使用Debian 11的普通镜像进行Debian 11的安装，并在安装完成后对系统进行一些基本的易用性配置，如添加sudo，配置alias等。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tsz.me/images/debian-11-vmware-setting-1.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-vmware-setting-2.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installer-menu.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-choose-language.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-choose-location-1.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-choose-location-2.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-choose-location-3.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-choose-locales.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-keyboard-keymap.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-hostname.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-domain.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-root-password.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-create-user.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-user-account.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-user-password.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-partition-1.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-partition-2.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-partition-3.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-partition-4.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-partition-5.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-partition-6.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-base-system.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-apt-1.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-apt-2.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-apt-3.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-apt-4.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-apt-5.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-usage-survey.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-software.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-grub-1.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-grub-2.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-grub-3.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-complete.png">
+<meta property="og:image" content="https://tsz.me/images/debian-11-installation-finish.png">
+<meta property="article:published_time" content="2022-05-11T12:51:16.000Z">
+<meta property="article:modified_time" content="2022-05-11T12:51:16.000Z">
+<meta property="article:author" content="Tsz Chiu Wong">
+<meta property="article:tag" content="技术类">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tsz.me/images/debian-11-vmware-setting-1.png">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/favicon.ico">
+    
+    <title>Debian 11安装与基本配置 · 子曰要闹闹</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20211217" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/dark.css?v=20211217" as="style">
+    <link rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" href="/css/mobile.css?v=20211217" media="(max-width: 960px)">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js?v=20211217" as="script">
+    <link rel="preload" href="/scripts/dark.js?v=20211217" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    
+    <!-- 百度统计  -->
+    
+        <script>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement("script");
+                hm.src = "https://hm.baidu.com/hm.js?1990fe4dfe653b35b522a1c9605d7f5f";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics  -->
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-V48XQ1JMHT"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-V48XQ1JMHT');
+        </script>
+    
+    <!-- Google AdSense  -->
+    
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7265728739442747" crossorigin="anonymous"></script>
+<meta name="generator" content="Hexo 6.2.0"><link rel="alternate" href="/atom.xml" title="子曰要闹闹" type="application/atom+xml">
+</head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+    
+        <body class="post-body">
+    
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        
+            <div class="header-sidebar-menu">
+        
+            
+                <div style="padding-left: 1px;">&#xe775;</div>
+            
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href=/>子曰要闹闹</a>
+        </span>
+    </div>
+    <!-- toggle banner for post layout -->
+    
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">子曰要闹闹</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">Debian 11安装与基本配置</a>
+            </div>
+        </div>
+    
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- back to top button -->
+    <div class="footer-fixed-element">
+        
+            <div class="back-top back-top-hidden">
+        
+        
+            <div>&#xe639;</div>
+        
+        </div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="
+
+
+
+
+
+
+
+    height:50vh;
+
+">
+    
+    <!-- 主页  -->
+    
+        
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/images/debian-linux-4k-ro.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+                Debian 11安装与基本配置
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+                
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        
+        
+            
+        
+        
+        <span class="post-category" data-categories="原创"">
+            <i class="fas fa-folder post-category-icon"></i>
+            <span class="post-category-text">
+                原创
+            </span>
+        </span>
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="技术类">技术类</a>
+    
+</div>
+
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">4.9k</span>阅读时长: <span class="post-count reading-time">17 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2022/05/11</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近我手上有一个基于WordPress的项目要进行开发测试工作。考虑到直接购买云服务器或虚拟主机在线上搭建一个环境出来还需要在备案上花费额外的时间，同时我也不清楚这个项目到底会吃掉多少系统资源，购买服务器时该选择哪种规格，所以我的计划是先在本地的虚拟机上跑项目，等开发完成后再把数据从测试环境直接怼到线上去。这样做可以让客户延缓服务器费用的支出，而我则能在本地留下一个测试环境<del>。打死我都不会说是因为我不想垫付服务器费用的</del>:-)</p>
+<h3 id="主题下的相关文章"><a href="#主题下的相关文章" class="headerlink" title="主题下的相关文章"></a>主题下的相关文章</h3><ul>
+<li>第二篇：<a href="/p/20220512_install-nginx-mariadb-php-lemp-lnmp-stack.html">LEMP&#x2F;LNMP环境搭建（Debian 11）</a></li>
+</ul>
+<h2 id="服务器操作系统的选择"><a href="#服务器操作系统的选择" class="headerlink" title="服务器操作系统的选择"></a>服务器操作系统的选择</h2><h3 id="为什么不选择CentOS"><a href="#为什么不选择CentOS" class="headerlink" title="为什么不选择CentOS"></a>为什么不选择CentOS</h3><p>2020年12月8日，<a target="_blank" rel="noopener" href="https://blog.centos.org/2020/12/future-is-centos-stream/">CentOS官方宣布停止维护CentOS</a>，并推出了CentOS Stream项目。</p>
+<p>对比一下Win7你就知道，最迟在2024年6月30日以后，这对于CentOS用户意味着什么。CentOS Stream是一个滚动升级的版本，无法保障系统稳定性与兼容性，所以CentOS Stream并不是生产环境的一个可选方案。</p>
+<h3 id="为什么不选择Ubuntu"><a href="#为什么不选择Ubuntu" class="headerlink" title="为什么不选择Ubuntu"></a>为什么不选择Ubuntu</h3><p>Ubuntu一方面通过其易用性吸引了大量初级用户，另一方面它又轻率不严肃地修改关键代码，造成与其它发行版不兼容的局面。这就导致了初级用户可能会遇到一些其它发行版并没有出现的问题，又或是在遇到其它发行版存在的共同问题时无法获取其它发行版的帮助，初级用户将因此而不得不购买Ubuntu的服务。<del>如果这样说不好理解的话，你可以类比一下，如果核酸检测能让你挣钱的话，你会希望疫情过去吗？</del></p>
+<blockquote>
+<p>我对Ubuntu的看法是：如果将它用作桌面操作系统来使用还行，毕竟GitHub上有很多开源软件的开发者在用Ubuntu进行开发，在相同的环境下开展开发工作可能更好的解决问题。但作为服务器操作系统的话，还是洗洗睡吧。<br>话说回来，Arch Linux具有拥好的wiki文档，想学习Linux的同学放弃Ubuntu桌面转向Arch可能会是更好的选择。</p>
+</blockquote>
+<h3 id="Debian系统简介"><a href="#Debian系统简介" class="headerlink" title="Debian系统简介"></a>Debian系统简介</h3><ul>
+<li>Debian是一个通用操作系统，即它<a target="_blank" rel="noopener" href="https://www.debian.org/releases/stable/">支持多种计算机架构</a>；</li>
+<li>Debian以其稳定性闻名（注：但凡说到稳定，就意味着它的套件有可能会是过时的，这些过时的套件只会有必要的安全更新而没有功能更新）；</li>
+<li>Debian主要关注自由和开源软件，<strong>它提供的内核不包括专有驱动程序和固件</strong>；</li>
+<li>Debian是一个真正的社区项目，它由社区成员管理。用户可以在Debian论坛中寻求帮助或提出建议。它没有提供付费支持服务（企业用户想花钱的话就自己养团队吧，提供更多的就业岗位能更好地展现企业的经济实力）。</li>
+</ul>
+<p>Debian一直维护着至少三个发行版：不稳定版（unstable）、测试版（testing）和稳定版（stable）。对每个稳定版，用户可以得到三年的完整支持以及额外两年的长期支持。<strong>当前（2022年5月11日）最新的稳定版是Debian 11.3，代号Bullseye。它在2026年7月结束支持。</strong></p>
+<h2 id="Debian-11安装过程"><a href="#Debian-11安装过程" class="headerlink" title="Debian 11安装过程"></a>Debian 11安装过程</h2><h3 id="光盘镜像选择"><a href="#光盘镜像选择" class="headerlink" title="光盘镜像选择"></a>光盘镜像选择</h3><p>Debian官方提供了<a target="_blank" rel="noopener" href="https://www.debian.org/distrib/">3种安装镜像</a>类型，它们分别是：</p>
+<ul>
+<li>普通镜像</li>
+<li>Live版镜像</li>
+<li>云镜像</li>
+</ul>
+<p>其中普通镜像又分为网络安装（netinst）镜像和完整镜像：网络安装镜像只包含了安装基本系统所需的最少软件，剩下的软件包都通过网络进行下载；而完整镜像包含了更多的软件包，以便在无法联网的机器上完成安装。当你点击Debian官网的下载按钮时，它提供的是最小化的网络安装镜像，此镜像没有非开源的固件。<strong>如果你在使用最小化镜像安装系统时遇到网卡或其它硬件无法识别的情况，你需要下载的是另外一个单独包含固件的非自由镜像。</strong></p>
+<p>Live镜像是一个live系统，之所以称它为系统，是因为这个镜像中包含了已预先安装的完整系统。你只需要下载后把它刻录进光盘或者写入到U盘，插入电脑后开机，在BIOS启动选项中选择从光盘或U盘启动，就可以直接进入系统开始工作。这时你并没有安装任何东西到你的硬盘上去，所有的程序都是直接从光盘或U盘上执行的。它非常适合新用户来体验Debian系统。<strong>强烈推荐普通桌面用户选此镜像安装Debian：在新手安装Debian过程中，聪明地采用此镜像，就已经成功一半了。</strong></p>
+<p>云镜像主要用于云服务器的部署。其中适用于OpenStack的qcow2&#x2F;raw格式的镜像可以通过转换来用于VMware虚拟机。</p>
+<p>关于镜像的其他问题，可以访问<a target="_blank" rel="noopener" href="https://www.debian.org/CD/faq/index.zh-cn.html">Debian官方常见问答集</a>。</p>
+<p>为了更好的演示安装过程，这次我们不选择通过云镜像来安装，我们选择普通镜像。两种普通镜像在安装过程中几乎没有出入，请根据自己掷出的骰子随意选择。</p>
+<h3 id="安装用的虚拟机环境说明"><a href="#安装用的虚拟机环境说明" class="headerlink" title="安装用的虚拟机环境说明"></a>安装用的虚拟机环境说明</h3><p><img src="/images/debian-11-vmware-setting-1.png" alt="虚拟机资源分配"></p>
+<p><img src="/images/debian-11-vmware-setting-2.png" alt="虚拟机NAT网络默认设置"></p>
+<ul>
+<li>虚拟机软件：VMware Workstation</li>
+<li>虚拟机的CPU分配：1个CPU，2个核心</li>
+<li>虚拟机磁盘大小：20G</li>
+<li>虚拟机的网络连接方式：NAT<del>（默认网段192.168.88.0&#x2F;24，DHCP默认开启）</del></li>
+</ul>
+<h3 id="本文与实体机安装可能存在的差异"><a href="#本文与实体机安装可能存在的差异" class="headerlink" title="本文与实体机安装可能存在的差异"></a>本文与实体机安装可能存在的差异</h3><p>本文是基于虚拟机安装Debian书写的。实体机的安装可能存在差异：</p>
+<ul>
+<li>虚拟机直接通过iso文件启动，而现实中你需要将iso通过<a target="_blank" rel="noopener" href="https://rufus.ie/zh/">Rufus</a>（Windows平台）或<a target="_blank" rel="noopener" href="https://www.balena.io/etcher/">Etcher</a>（Windows&#x2F;Linux平台）工具制成启动U盘，并需要进行一些设置操作来完成通过U盘来启动电脑；</li>
+<li>虚拟机在没有操作系统的时候会直接通过iso启动，而现实中你可能需要在电脑开机显示制造商标识的时候，按下<code>F2</code>、<code>F10</code>或<code>F12</code>等键进入开机引导设置界面（不同的的制造商在按键和界面上会有一些差异）；</li>
+<li>有些实体机启用了安全启动（secure boot）功能，它不允许引导Linux安装光盘。如果是这种情况，请<a target="_blank" rel="noopener" href="https://itsfoss.com/disable-secure-boot-windows/">从BIOS设置里禁用安全启动</a>；</li>
+<li><del>在实体机上进行安装，你可能还需要额外了解一些<a target="_blank" rel="noopener" href="https://itsfoss.com/check-mbr-or-gpt/">MBR与GPT</a>、<a target="_blank" rel="noopener" href="https://itsfoss.com/check-uefi-or-bios/">传统的BIOS与UEFI</a>的知识；</del></li>
+<li><strong>实体机安装Debian，请优先选用Live镜像，请优先选用Live镜像，请优先选用Live镜像。重要的事情说三遍。</strong></li>
+</ul>
+<h3 id="详细安装记录"><a href="#详细安装记录" class="headerlink" title="详细安装记录"></a>详细安装记录</h3><p><img src="/images/debian-11-installer-menu.png" alt="Debian 11 installer menu"></p>
+<p>从镜像启动虚拟机，进入安装选项界面。前两个选项分别是图形化安装（Graphical install）和终端安装（Install），它们的安装步骤都是类似的。在终端下安装无法使用鼠标进行操作，推荐新人选择图形化安装。</p>
+<p><img src="/images/debian-11-installation-choose-language.png" alt="语言选择"></p>
+<p>接下来是语言选择界面，这个语言选择控制的不只是安装过程中界面上显示的文字，也是操作系统安装完成后默认的系统语言。因为我是把它作为服务器来使用的，安装后并没有图形界面，都是在命令行下执行操作的，而在直连的终端下使用中文可能会有显示问题（SSH连接的话应该是没有问题的），所以为了不在安装完成后重新进行设置，我在这里选择了默认的English。<strong>新手可以选择中文，不用担心，系统安装完成后是可以修改语言的。毕竟弄明白是怎么回事儿更重要。</strong></p>
+<p><img src="/images/debian-11-installation-choose-location-1.png" alt="地域选择 - other"></p>
+<p><img src="/images/debian-11-installation-choose-location-2.png" alt="地域选择 - Asia"></p>
+<p><img src="/images/debian-11-installation-choose-location-3.png" alt="地域选择 - China"></p>
+<p>接下来是选择地域，这一步会影响到后面安装源的选择，为了加快源的下载速度，可以根据服务器的实际位置来选择。这里我选择other-Asia-China。</p>
+<p><img src="/images/debian-11-installation-choose-locales.png" alt="系统本地化设置"></p>
+<p>这里需要对系统的本地化进行额外的设置。由于我们前面选择的是使用English语言，位置在China，而系统里面没有自带en_CN.UTF-8这个选项，所以需要我们自己选择一个合适的选项。默认选择的en_US.UTF-8就很OK。</p>
+<p><img src="/images/debian-11-installation-keyboard-keymap.png" alt="键盘布局选择"></p>
+<p>键盘布局选择，如果键盘上按键位置与其他国内到处可见的键盘一致，选择默认的American English即可。</p>
+<p><img src="/images/debian-11-installation-hostname.png" alt="主机名设置"></p>
+<p>主机名设置，它的作用是在局域网中标识你的主机（就好像在互联网中使用域名来标识一台服务器一样）。由于这是一台本地测试服务器，不需要什么公司统一的命名规范，随便起一个能让自己快速明白它的作用，且与网络中其它主机不重复的名称即可。</p>
+<p><img src="/images/debian-11-installation-domain.png" alt="域名设定"></p>
+<p>主机域名设定。我们的电脑只是用于家庭网络，所以随便选个名字就行。这里采用系统默认的名称localdomain。</p>
+<p>注：因为我们把虚拟机的网络设置成了NAT，虚拟机所在的网络是有DHCP服务器的，所以这里你看到的情况可能会和你实际操作中遇到的界面不太一样，这里是因为Debian安装程序会自动检测主机连接的网络情况，自动配置了网络参数。</p>
+<p><img src="/images/debian-11-installation-root-password.png" alt="管理员密码设置"></p>
+<p>设置管理员用户root的密码，连续输入两次。</p>
+<p><img src="/images/debian-11-installation-create-user.png" alt="添加新用户"></p>
+<p>除了root之外，我们还需要为系统添加一个普通用户，这里我们要输入的是用户全名。注意，这不是用户登录系统使用的用户名。就好像现实中有一个人名字叫张三，他电脑登陆的用户名却叫luoxiang。这里输入的是他自己喜欢的名字：张三，或者法外狂徒。</p>
+<p><img src="/images/debian-11-installation-user-account.png" alt="设置新用户登陆名"></p>
+<p>为刚刚我们新建的用户指定一个登陆系统使用的用户名。因为Debian安装之后默认不允许使用root进行SSH登录，在创建别的用户之前，这里创建的新用户是唯一能通过SSH登录的用户，请务必牢记当前创建的登陆名和密码。</p>
+<p><img src="/images/debian-11-installation-user-password.png" alt="设置新用户登陆密码"></p>
+<p>为新用户指定登陆系统使用的密码，重复两次。</p>
+<p><img src="/images/debian-11-installation-partition-1.png" alt="磁盘分区"></p>
+<p>这一步是磁盘分区。这里要进行的操作可能会稍微专业那么一丢丢。很多对Linux不熟悉的朋友在物理机安装Linux的时候导致硬盘分区丢失就是在这一步。不过我们选择知难而退，直接让系统帮我们把整个磁盘（entire disk）进行分区。分区的时候我们选择第二个选项，使用LVM。</p>
+<p>LVM是Logical Volume Manager的缩写，中文一般翻译为“逻辑卷管理”，它是Linux下对磁盘分区进行管理的一种机制。系统管理员可以利用LVM<strong>在不重新对磁盘分区的情况下动态的调整分区的大小</strong>。如果系统新增了一块硬盘，通过LVM就可以将新增的硬盘空间直接扩展到原来的磁盘分区上。例如：未来我们觉得之前分配给系统的磁盘小了不够用了，我们可以直接通过VMware添加一块磁盘给虚拟机，再通过一系列指令来扩大原来分配的磁盘大小。</p>
+<p><strong>如果是在虚拟机中来为现实安装做练习，你可以尝试下第四个选项，手动配置。练习前可以看看<a target="_blank" rel="noopener" href="http://cn.linux.vbird.org/linux_basic/0130designlinux.php">鸟哥的文档-主机规划与磁盘分区</a>。</strong></p>
+<p><img src="/images/debian-11-installation-partition-2.png" alt="选择分区磁盘"></p>
+<p>给系统解释一下，我们说的整块磁盘，到底是哪块磁盘。「你给我翻译翻译，什么他妈的是他妈的惊喜」</p>
+<p><img src="/images/debian-11-installation-partition-3.png" alt="自动分区策略"></p>
+<p>这里是指定一个自动分区的策略，我们是否要把一些挂载点单独分出来。单独分出来的话，在<strong>现实中</strong>是有好处的，如果硬盘出现问题，你可以把这些分区单独挂载出来，执行导数据等一系列操作。我们当前的出发点是做测试环境，实际借助的是VMware的快照功能。我们实际需要做的是加强我们本地实体机的硬盘抗灾能力，而非虚机。所以这里我们大胆的选择，请把全部文件放在一个分区下——我是Python用户，一个采取扁平化方式看待世界的人。</p>
+<p><img src="/images/debian-11-installation-partition-4.png" alt="硬盘分区动作确认"></p>
+<p>吃红色药丸（Yes），还是吃蓝色药丸（No）？选择了Yes，硬盘上的数据就要说拜拜了您呐。选择了No，过会儿它再来问你一次。</p>
+<p>Debian默认使用ext4文件系统。ext4是什么，你可以参照Windows使用NTFS格式对磁盘进行格式化这个概念来进行对比理解。</p>
+<p><img src="/images/debian-11-installation-partition-5.png" alt="卷组大小设置"></p>
+<p>确认一下卷组大小。默认值（整个磁盘大小）即可。</p>
+<p><img src="/images/debian-11-installation-partition-6.png" alt="LVM执行确认"></p>
+<p>再确认一下，确认后系统就要搞事儿了。<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-cn/%E5%8B%BF%E8%AC%82%E8%A8%80%E4%B9%8B%E4%B8%8D%E9%A0%90%E4%B9%9F">勿谓言之不预也</a>~</p>
+<p><img src="/images/debian-11-installation-base-system.png" alt="基础系统安装"></p>
+<p>安装最小系统。等待读条。</p>
+<p><img src="/images/debian-11-installation-apt-1.png" alt="扫描其他安装光盘"></p>
+<p>是否还有其它的安装光盘？因为后续我们会通过网络来下载所需的软件包，所以此处我们选No。如果对这一步有疑问，请留言。</p>
+<p><img src="/images/debian-11-installation-apt-2.png" alt="选择距离您最近的本地镜像源"></p>
+<p>选择你要使用的本地镜像源，请选择距离你位置最近的地区。这里选了China。</p>
+<p><img src="/images/debian-11-installation-apt-3.png" alt="本地镜像源选择"></p>
+<p>我选择163镜像源。</p>
+<p><img src="/images/debian-11-installation-apt-4.png" alt="代理设置"></p>
+<p>你上网是否需要使用代理？不需要的留空。</p>
+<p><img src="/images/debian-11-installation-apt-5.png" alt="APT包管理器配置读条"></p>
+<p>配置APT包管理器。等读条……</p>
+<p><img src="/images/debian-11-installation-usage-survey.png" alt="使用反馈选项"></p>
+<p>是否参加匿名的使用反馈？你决定。</p>
+<p><img src="/images/debian-11-installation-software.png" alt="软件安装选择"></p>
+<p>选择需要安装的软件包。我们是服务器用途，所以我们就不安装桌面环境了（毕竟我只给它分配了2G的内存，要啥自行车！这是任性的时候么，都要是资源的）。但是我们要远程使用SSH工具登陆系统，所以我们选择SSH Server选项。最后一项——标准的系统工具集——我们继续保持默认选中状态。</p>
+<p><img src="/images/debian-11-installation-grub-1.png" alt="安装引导"></p>
+<p>是否在本地磁盘上安装引导。我们本机没有别的操作系统安装的引导程序，也不想每次通过光盘来引导系统启动，所以这一步我们选择Yes。</p>
+<p><img src="/images/debian-11-installation-grub-2.png" alt="安装引导"></p>
+<p>选择把引导安装在哪块磁盘上。我只且仅有一块硬盘，所以直接选择&#x2F;dev&#x2F;sda。第一个选项是手工输入，需要自己手敲键盘，敲的内容还是<code>/dev/sda</code>，会多消耗8次键盘敲击的能量。现实中用户如果想实现Windows-Linux双系统共存，可以先安装Windows再安装Linux，这样可能会在引导程序这个问题上减少工作量。不过如果只有一块磁盘又想双系统，那之前的分区操作就需要你多花点时间来深入了解一下，毕竟不能再任性地擦除整块硬盘数据了。</p>
+<p><img src="/images/debian-11-installation-grub-3.png" alt="安装引导"></p>
+<p><img src="/images/debian-11-installation-complete.png" alt="Debian 11 installation complete"></p>
+<p>完成安装，系统要求移除光盘后重启——不移除光盘的话，如果系统还是从光盘引导而不是硬盘引导的话，会再次进入系统安装过程。不过VMware会在重启后尝试从磁盘启动系统的，所以我们在此并不需要实际做些什么。直接Continue。</p>
+<p><img src="/images/debian-11-installation-finish.png" alt="完成安装"></p>
+<p>系统重启，安全地看到系统启动引导界面。泪流满面。</p>
+<h2 id="Debian-11安装后的基本配置"><a href="#Debian-11安装后的基本配置" class="headerlink" title="Debian 11安装后的基本配置"></a>Debian 11安装后的基本配置</h2><h3 id="root无法通过SSH登录"><a href="#root无法通过SSH登录" class="headerlink" title="root无法通过SSH登录"></a>root无法通过SSH登录</h3><p>在新完成安装的Debian系统上，root用户是无法直接通过SSH登录的，我们只能通过在安装过程创建的用户进行SSH的登录（这里说的是SSH远程登陆，不是直接在电脑前操作。在电脑前root用户可以直接登陆）。</p>
+<p>如果希望root用户登陆SSH的话，需要修改SSH的配置文件。实际上不以root用户直接登陆系统可能是更安全的选项，而且在有需要的时候可以通过<a target="_blank" rel="noopener" href="http://cn.linux.vbird.org/linux_basic/0410accountmanager_4.php">身份变换</a>的方式来运行指令。所以我们在此就不设置允许root SSH登陆了。</p>
+<h3 id="sudo命令找不到"><a href="#sudo命令找不到" class="headerlink" title="sudo命令找不到"></a>sudo命令找不到</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">testu@bogon:~$ su -                      &lt;--切换到root用户，并加载root用户的环境变量！</span><br><span class="line">Password:                                &lt;-- 输入root的密码</span><br><span class="line">root@bogon:~# apt install sudo           &lt;-- 执行sudo的安装</span><br><span class="line">root@bogon:~# sudo -V | grep path        &lt;-- 确定sudoers文件位置</span><br><span class="line">root@bogon:~# cat /etc/sudoers           &lt;-- 查看系统默认的可执行sudo指令的用户群组</span><br><span class="line">root@bogon:~# id testu                   &lt;-- 查看testu用户当前所在的群组</span><br><span class="line">root@bogon:~# usermod -a -G sudo testu   &lt;-- 给testu用户加入sudo群组</span><br><span class="line">root@bogon:~# id testu                   &lt;-- 验证testu用户成功加入群组</span><br><span class="line">root@bogon:~# exit                       &lt;-- 退出root切换</span><br><span class="line">testu@bogon:~# exit                      &lt;-- 退出testu后重新登陆testu，即可拥有sudo权限</span><br></pre></td></tr></table></figure>
+
+<h3 id="执行系统更新"><a href="#执行系统更新" class="headerlink" title="执行系统更新"></a>执行系统更新</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">testu@bogon:~$ sudo apt update   &lt;-- 检查更新</span><br><span class="line">[sudo] password for testu:       &lt;-- 输入的是testu的密码，而不是执行su时输入的root密码</span><br><span class="line">testu@bogon:~$ sudo apt upgrade  &lt;-- 执行更新（如果有更新的话再执行）</span><br><span class="line">testu@bogon:~$ man sources.list  &lt;-- 查看如何配置软件源的系统手册</span><br><span class="line">testu@bogon:~$ cat /etc/apt/sources.list   &lt;-- 系统软件源配置文件，如有deb cdrom的条目可以在此文件中使用sudo vi /etc/apt/sources.list命令来编辑注释该行</span><br></pre></td></tr></table></figure>
+
+<h3 id="设定命令alias"><a href="#设定命令alias" class="headerlink" title="设定命令alias"></a>设定命令alias</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">testu@bogon:~$ alias                            &lt;-- 查看当前已有的命令alias</span><br><span class="line">testu@bogon:~$ cat /etc/shells                  &lt;-- 查看当前系统有哪些shell可用</span><br><span class="line">testu@bogon:~$ cat /etc/passwd | grep `whoami`  &lt;-- 查看自己账号使用的shell</span><br><span class="line">testu@bogon:~$ man bash                         &lt;-- 当前我用的是bash，看一下帮助手册</span><br><span class="line">testu@bogon:~$ cat ~/.bashrc                    &lt;-- 查看~/.bashrc文件</span><br><span class="line">testu@bogon:~$ vi ~/.bashrc                     &lt;-- 编辑此文件，在此处取消一些alias注释</span><br><span class="line">testu@bogon:~$ source ~/.bashrc                 &lt;-- 重新加载~/.bashrc使修改生效</span><br><span class="line">testu@bogon:~$ alias                            &lt;-- 可以确认新设置的alias已经生效了</span><br><span class="line">testu@bogon:~$ cat /etc/bash.bashrc             &lt;-- 这里只是告诉你这是系统全局的bashrc</span><br></pre></td></tr></table></figure>
+
+<h3 id="系统防火墙配置"><a href="#系统防火墙配置" class="headerlink" title="系统防火墙配置"></a>系统防火墙配置</h3><p>nftables是Debian 11默认的防火墙，它替换了之前使用的iptables。系统安装完后，防火墙是默认没有启用的。<strong>直接启用后里边也是没有默认规则的。</strong>由于我是测试用途，所以就不配置防火墙了。</p>
+<p>下面放置一些基本资料，有需要的朋友请自行研究或者留言告诉我。有需要的人多了，我再出个文档。</p>
+<p>官方wiki：<a target="_blank" rel="noopener" href="https://wiki.debian.org/nftables">https://wiki.debian.org/nftables</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">testu@bogon:~$ systemctl status nftables          &lt;-- 查看防火墙状态</span><br><span class="line">testu@bogon:~$ cat /etc/nftables.conf             &lt;-- 查看当前防火墙的配置</span><br><span class="line">testu@bogon:~$ sudo systemctl start nftables      &lt;-- 开启防火墙</span><br><span class="line">testu@bogon:~$ sudo nft list ruleset              &lt;-- 查看当前的防火墙规则</span><br><span class="line">testu@bogon:~$ sudo systemctl enable nftables     &lt;-- 设置开机启动</span><br></pre></td></tr></table></figure>
+
+<h3 id="其他学习资料"><a href="#其他学习资料" class="headerlink" title="其他学习资料"></a>其他学习资料</h3><p>想要更好地学习Debian，可参考<a target="_blank" rel="noopener" href="https://www.debian.org/doc/manuals/debian-reference/">Debian参考手册</a>。请<strong>不要</strong>盲目追求系统性的学习，立足于遇到的每一个实际问题，坚持上手实践就会有巨大进步的。</p>
+
+    </article>
+    <!-- license -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://tsz.me">Tsz Chiu Wong</a>
+            <p>原文链接：<a href="https://tsz.me/p/20220511_debian-11-installation-guide.html">https://tsz.me/p/20220511_debian-11-installation-guide.html</a>
+            <p>发表日期：<a href="https://tsz.me/p/20220511_debian-11-installation-guide.html">2022年05月11日 20时51分16秒</a>
+            <p>更新日期：<a href="https://tsz.me/p/20220511_debian-11-installation-guide.html">2022年05月11日 20时51分16秒</a>
+            <p>版权声明：本博客所有标注原创的文章除特别声明外，均采用<a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA</a>许可协议。转载请注明出处。</p>
+        </div>
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href="/p/20220512_install-nginx-mariadb-php-lemp-lnmp-stack.html" title="LEMP/LNMP环境搭建（Debian 11）">
+                    <div class="nextTitle">LEMP/LNMP环境搭建（Debian 11）</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/p/20211007_%E3%80%8A%E5%8D%A1%E7%89%87%E7%AC%94%E8%AE%B0%E5%86%99%E4%BD%9C%E6%B3%95%E3%80%8B%E9%98%85%E8%AF%BB%E4%B8%8E%E5%AE%9E%E8%B7%B5.html" title="《卡片笔记写作法》阅读与实践">
+                    <div class="prevTitle">《卡片笔记写作法》阅读与实践</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- comment -->
+    
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+
+            
+
+            
+
+            
+
+            <!-- utteranc评论 -->
+
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+
+            
+            
+
+            
+
+        </div>
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
+    
+</main>
+
+                <!-- profile -->
+                
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+        <div class="social">
+            
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a href="/atom.xml" class="iconfont-archer rss" target="_blank" title=rss></a>
+            
+        
+    
+
+
+        </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank" rel="external nofollow">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    
+    <!-- 不蒜子  -->
+    
+        <div class="busuanzi-container">
+            
+             
+                <span id="busuanzi_container_site_pv">本站总计访问次数：<span id="busuanzi_value_site_pv"></span></span>
+            
+        </div>
+    	
+</footer>
+
+        </div>
+        <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%A2%98%E4%B8%8B%E7%9A%84%E7%9B%B8%E5%85%B3%E6%96%87%E7%AB%A0"><span class="toc-number">1.1.</span> <span class="toc-text">主题下的相关文章</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%80%89%E6%8B%A9"><span class="toc-number">2.</span> <span class="toc-text">服务器操作系统的选择</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E9%80%89%E6%8B%A9CentOS"><span class="toc-number">2.1.</span> <span class="toc-text">为什么不选择CentOS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E9%80%89%E6%8B%A9Ubuntu"><span class="toc-number">2.2.</span> <span class="toc-text">为什么不选择Ubuntu</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Debian%E7%B3%BB%E7%BB%9F%E7%AE%80%E4%BB%8B"><span class="toc-number">2.3.</span> <span class="toc-text">Debian系统简介</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Debian-11%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">Debian 11安装过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%89%E7%9B%98%E9%95%9C%E5%83%8F%E9%80%89%E6%8B%A9"><span class="toc-number">3.1.</span> <span class="toc-text">光盘镜像选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E7%94%A8%E7%9A%84%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%8E%AF%E5%A2%83%E8%AF%B4%E6%98%8E"><span class="toc-number">3.2.</span> <span class="toc-text">安装用的虚拟机环境说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E6%96%87%E4%B8%8E%E5%AE%9E%E4%BD%93%E6%9C%BA%E5%AE%89%E8%A3%85%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="toc-number">3.3.</span> <span class="toc-text">本文与实体机安装可能存在的差异</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%A6%E7%BB%86%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95"><span class="toc-number">3.4.</span> <span class="toc-text">详细安装记录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Debian-11%E5%AE%89%E8%A3%85%E5%90%8E%E7%9A%84%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE"><span class="toc-number">4.</span> <span class="toc-text">Debian 11安装后的基本配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#root%E6%97%A0%E6%B3%95%E9%80%9A%E8%BF%87SSH%E7%99%BB%E5%BD%95"><span class="toc-number">4.1.</span> <span class="toc-text">root无法通过SSH登录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sudo%E5%91%BD%E4%BB%A4%E6%89%BE%E4%B8%8D%E5%88%B0"><span class="toc-number">4.2.</span> <span class="toc-text">sudo命令找不到</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E7%B3%BB%E7%BB%9F%E6%9B%B4%E6%96%B0"><span class="toc-number">4.3.</span> <span class="toc-text">执行系统更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E5%AE%9A%E5%91%BD%E4%BB%A4alias"><span class="toc-number">4.4.</span> <span class="toc-text">设定命令alias</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E9%98%B2%E7%81%AB%E5%A2%99%E9%85%8D%E7%BD%AE"><span class="toc-number">4.5.</span> <span class="toc-text">系统防火墙配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99"><span class="toc-number">4.6.</span> <span class="toc-text">其他学习资料</span></a></li></ol></li></ol>
+            </div>
+        
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 17
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+        
+            
+            
+            <div class="archive-year"> 2022 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/03</span>
+            <a class="archive-post-title" href="/p/20220903_v2ray%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%20(%E8%AF%B7%E6%B7%BB%E5%8A%A0%E8%BF%9E%E5%AD%97%E7%AC%A6).html">v2ray环境部署</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/12</span>
+            <a class="archive-post-title" href="/p/20220512_install-nginx-mariadb-php-lemp-lnmp-stack.html">LEMP/LNMP环境搭建（Debian 11）</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/11</span>
+            <a class="archive-post-title" href="/p/20220511_debian-11-installation-guide.html">Debian 11安装与基本配置</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2021 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span>
+            <a class="archive-post-title" href="/p/20211007_%E3%80%8A%E5%8D%A1%E7%89%87%E7%AC%94%E8%AE%B0%E5%86%99%E4%BD%9C%E6%B3%95%E3%80%8B%E9%98%85%E8%AF%BB%E4%B8%8E%E5%AE%9E%E8%B7%B5.html">《卡片笔记写作法》阅读与实践</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/13</span>
+            <a class="archive-post-title" href="/p/20210913_%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F.html">微信小程序</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span>
+            <a class="archive-post-title" href="/hardware/switch.html">Switch!</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/03</span>
+            <a class="archive-post-title" href="/p/20210903_microblog.html">空中有朵棉花糖</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/02</span>
+            <a class="archive-post-title" href="/p/20210902_%E4%BA%BA%E7%94%9F%E8%8B%A6%E7%9F%AD%E7%9A%84Python.html">人生苦短的Python</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/01</span>
+            <a class="archive-post-title" href="/p/20210901_MySQL-%E6%90%9E%E5%AE%83.html">MySQL，搞它</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/30</span>
+            <a class="archive-post-title" href="/p/20210830_%E5%88%9D%E6%AD%A5%E4%BA%86%E8%A7%A3LGBT.html">初步了解LGBT</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/25</span>
+            <a class="archive-post-title" href="/p/20210125_Resilio-Sync-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C.html">Resilio Sync 工具使用手册</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2020 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/14</span>
+            <a class="archive-post-title" href="//tsz.me/hardware/xbox-one.html">xbox one 相关记录</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/16</span>
+            <a class="archive-post-title" href="/p/20200716_my-video-production-attempts-and-thoughts.html">我的视频制作尝试与想法（2022）</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2019 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/23</span>
+            <a class="archive-post-title" href="/p/20191223_%E5%8D%9A%E5%AE%A2%E5%86%8D%E6%90%AD%E5%BB%BA.html">博客再搭建</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2016 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/09</span>
+            <a class="archive-post-title" href="/p/20160909_my-keyboards.html">我的键盘清单</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2014 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/16</span>
+            <a class="archive-post-title" href="/hardware/raspberry-pi.html">Raspberry Pi 使用记录</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/03</span>
+            <a class="archive-post-title" href="/p/20140603_%E5%81%9A%E8%8F%9C%E7%BB%83%E4%B9%A0.html">做菜练习</a>
+        </li>
+    
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+        
+            <span class="sidebar-tag-name" data-tags="技术类">
+                <span class="iconfont-archer">&#xe606;</span>
+                技术类
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="LGBT">
+                <span class="iconfont-archer">&#xe606;</span>
+                LGBT
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="跨性别">
+                <span class="iconfont-archer">&#xe606;</span>
+                跨性别
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="厌女症">
+                <span class="iconfont-archer">&#xe606;</span>
+                厌女症
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="社会排斥">
+                <span class="iconfont-archer">&#xe606;</span>
+                社会排斥
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="性别歧视">
+                <span class="iconfont-archer">&#xe606;</span>
+                性别歧视
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="女权主义">
+                <span class="iconfont-archer">&#xe606;</span>
+                女权主义
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="生活类">
+                <span class="iconfont-archer">&#xe606;</span>
+                生活类
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="吃">
+                <span class="iconfont-archer">&#xe606;</span>
+                吃
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="记录">
+                <span class="iconfont-archer">&#xe606;</span>
+                记录
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="配置">
+                <span class="iconfont-archer">&#xe606;</span>
+                配置
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="第三类">
+                <span class="iconfont-archer">&#xe606;</span>
+                第三类
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="设备">
+                <span class="iconfont-archer">&#xe606;</span>
+                设备
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="游戏主机">
+                <span class="iconfont-archer">&#xe606;</span>
+                游戏主机
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="开箱">
+                <span class="iconfont-archer">&#xe606;</span>
+                开箱
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="MySQL">
+                <span class="iconfont-archer">&#xe606;</span>
+                MySQL
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="数据库">
+                <span class="iconfont-archer">&#xe606;</span>
+                数据库
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="软件">
+                <span class="iconfont-archer">&#xe606;</span>
+                软件
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="开发">
+                <span class="iconfont-archer">&#xe606;</span>
+                开发
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="读书">
+                <span class="iconfont-archer">&#xe606;</span>
+                读书
+            </span>
+        
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="原创">
+            <span class="iconfont-archer">&#xe60a;</span>
+            原创
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_好奇">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_好奇
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_生活">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_生活
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_设备">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_设备
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_新生代农民工">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_新生代农民工
+        </span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMetaRoot = "/"
+    if (siteMetaRoot === "undefined") {
+        siteMetaRoot = '/'
+    }
+    var siteMeta = {
+        url: "https://tsz.me",
+        root: siteMetaRoot,
+        author: "Tsz Chiu Wong"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+
+        <!-- main func -->
+        <script src="/scripts/main.js?v=20211217"></script>
+        <!-- dark mode -->
+        <script src="/scripts/dark.js?v=20211217"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+        <!-- algolia -->
+        
+        <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20211217" async></script>
+        
+        <!-- mermaid -->
+        
+    </body>
+</html>

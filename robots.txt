@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /assets/
+Disallow: /font/
+
+Sitemap: https://tsz.me/sitemap.xml
+Sitemap: https://tsz.me/baidusitemap.xml

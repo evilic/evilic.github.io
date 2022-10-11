@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <!-- title -->
+
+
+    
+
+<!-- keywords -->
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Tsz Chiu Wong">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Tsz Chiu Wong">
+    
+        <meta name="keywords" content="LNMP环境搭建,WordPress搭建,LNMP stack,Nginx安装,install Nginx,MariaDB安装,install MariaDB,PHP安装,install PHP,子曰要闹闹,Tsz Chiu Wong">
+    
+    <meta name="description" content="子曰要闹闹是一个独立的博客站点。文章的内容整理了我在工作、生活中遇到的问题，和一些自己在兴趣爱好上的瞎折腾，可能偶尔还会有个读后感…我想通过输出一些非专业的零基础人员都读懂的文章来帮助自己把虚浮的知识变扎实。如果这些文章恰巧也能解决你的问题，我会很开心的。欢迎交流讨论。">
+    <meta name="description" content="本文记录了我以WordPress搭建为目的，在Debian 11下进行LEMP&#x2F;LNMP环境搭建的过程。详细记录了Nginx安装、MySQL&#x2F;MariaDB安装与PHP安装（包含WordPress所需扩展）的步骤，以及后续的配置过程。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LEMP&#x2F;LNMP环境搭建（Debian 11）">
+<meta property="og:url" content="https://tsz.me/p/20220512_install-nginx-mariadb-php-lemp-lnmp-stack.html">
+<meta property="og:site_name" content="子曰要闹闹">
+<meta property="og:description" content="本文记录了我以WordPress搭建为目的，在Debian 11下进行LEMP&#x2F;LNMP环境搭建的过程。详细记录了Nginx安装、MySQL&#x2F;MariaDB安装与PHP安装（包含WordPress所需扩展）的步骤，以及后续的配置过程。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tsz.me/images/lnmp-on-debian-11.png">
+<meta property="og:image" content="https://tsz.me/images/welcome-to-nginx.png">
+<meta property="og:image" content="https://tsz.me/images/mariadb-server-105.png">
+<meta property="og:image" content="https://tsz.me/images/mariadb-listen-on-localhost.png">
+<meta property="og:image" content="https://tsz.me/images/navicat-ssh-db.png">
+<meta property="og:image" content="https://tsz.me/images/debian-php-74.png">
+<meta property="og:image" content="https://tsz.me/images/php-fpm-config.png">
+<meta property="og:image" content="https://tsz.me/images/check-nginx-php-config.png">
+<meta property="og:image" content="https://tsz.me/images/wordpress-installation-finished.png">
+<meta property="article:published_time" content="2022-05-12T08:09:36.000Z">
+<meta property="article:modified_time" content="2022-05-12T08:09:36.000Z">
+<meta property="article:author" content="Tsz Chiu Wong">
+<meta property="article:tag" content="技术类">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tsz.me/images/lnmp-on-debian-11.png">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/favicon.ico">
+    
+    <title>LEMP/LNMP环境搭建（Debian 11） · 子曰要闹闹</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20211217" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/dark.css?v=20211217" as="style">
+    <link rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" href="/css/mobile.css?v=20211217" media="(max-width: 960px)">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js?v=20211217" as="script">
+    <link rel="preload" href="/scripts/dark.js?v=20211217" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    
+    <!-- 百度统计  -->
+    
+        <script>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement("script");
+                hm.src = "https://hm.baidu.com/hm.js?1990fe4dfe653b35b522a1c9605d7f5f";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics  -->
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-V48XQ1JMHT"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-V48XQ1JMHT');
+        </script>
+    
+    <!-- Google AdSense  -->
+    
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7265728739442747" crossorigin="anonymous"></script>
+<meta name="generator" content="Hexo 6.2.0"><link rel="alternate" href="/atom.xml" title="子曰要闹闹" type="application/atom+xml">
+</head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+    
+        <body class="post-body">
+    
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        
+            <div class="header-sidebar-menu">
+        
+            
+                <div style="padding-left: 1px;">&#xe775;</div>
+            
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href=/>子曰要闹闹</a>
+        </span>
+    </div>
+    <!-- toggle banner for post layout -->
+    
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">子曰要闹闹</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">LEMP/LNMP环境搭建（Debian 11）</a>
+            </div>
+        </div>
+    
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- back to top button -->
+    <div class="footer-fixed-element">
+        
+            <div class="back-top back-top-hidden">
+        
+        
+            <div>&#xe639;</div>
+        
+        </div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="
+
+
+
+
+
+
+
+    height:50vh;
+
+">
+    
+    <!-- 主页  -->
+    
+        
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/images/debian-linux-4k-ro.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+                LEMP/LNMP环境搭建（Debian 11）
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+                
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        
+        
+            
+        
+        
+        <span class="post-category" data-categories="原创"">
+            <i class="fas fa-folder post-category-icon"></i>
+            <span class="post-category-text">
+                原创
+            </span>
+        </span>
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="技术类">技术类</a>
+    
+</div>
+
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">3.3k</span>阅读时长: <span class="post-count reading-time">15 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2022/05/12</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <h2 id="LNMP环境搭建说明"><a href="#LNMP环境搭建说明" class="headerlink" title="LNMP环境搭建说明"></a>LNMP环境搭建说明</h2><p><img src="/images/lnmp-on-debian-11.png" alt="LNMP环境搭建"></p>
+<p>有些问题需要提前说明一下：</p>
+<ol>
+<li>本文是<a href="/p/20220511_debian-11-installation-guide.html">Debian 11安装与基本配置</a>一文的后续。本文中会用到<code>sudo</code>命令，它的配置可参考该文；</li>
+<li>本次进行LEMP&#x2F;LNMP环境搭建的目的，是为了进行WordPress搭建。本文PHP安装的部分提到的扩展都是基于WordPress的需要。请根据你的实际需要安装PHP扩展，而不是直接按照本文安装上一坨你可能不需要的扩展；</li>
+<li>Debian 11防火墙默认没有规则，所以本文中不包含任何防火墙的端口放行设置（我甚至没有开防火墙）。在生产环境中请配置合适的防火墙规则。</li>
+</ol>
+<p>LEMP&#x2F;LNMP环境搭建包括以下内容：(E)Nginx安装、MySQL&#x2F;MariaDB安装和PHP安装。它们是实现web服务器的<del>一个栈</del>一套程序集。</p>
+<h2 id="Nginx安装"><a href="#Nginx安装" class="headerlink" title="Nginx安装"></a>Nginx安装</h2><p>Nginx是一个免费的开源网络服务器，提供HTTP请求处理、反向代理、缓存和负载均衡等功能。它易于设置，是Apache的替代品。</p>
+<p>这里我<strong>安装的是Nginx官方源提供的版本</strong>，而不是Debian官方源提供的版本。<a target="_blank" rel="noopener" href="https://nginx.org/en/linux_packages.html#Debian">Nginx官方的安装文档</a>写的很是详细，我们照着来就好~</p>
+<p>安装依赖</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">testu@bogon:~$ sudo apt install curl gnupg2 ca-certificates lsb-release debian-archive-keyring</span><br></pre></td></tr></table></figure>
+<p>下载官方的签名密钥</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">testu@bogon:~$ curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg &gt; /dev/null</span><br></pre></td></tr></table></figure>
+
+<p>验证密钥指纹（瞪大双眼，肉眼比对官网提供的数据与本地的显示是否一致）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">testu@bogon:~$ gpg --dry-run --quiet --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
+
+<p>将nginx的稳定源加入系统</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">testu@bogon:~$ echo &quot;deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \</span><br><span class="line">http://nginx.org/packages/debian `lsb_release -cs` nginx&quot; | sudo tee /etc/apt/sources.list.d/nginx.list</span><br></pre></td></tr></table></figure>
+
+<p>设置nginx官方源的优先级高于Debian系统的官方仓库</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">testu@bogon:~$ echo -e &quot;Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n&quot; | sudo tee /etc/apt/preferences.d/99nginx</span><br></pre></td></tr></table></figure>
+
+<p>更新源，并安装nginx</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">testu@bogon:~$ sudo apt update</span><br><span class="line">testu@bogon:~$ sudo apt install nginx</span><br></pre></td></tr></table></figure>
+
+<p>下面是一些你可能会用到的命令或数据，我随便打一下，你配合着随便看一下。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">testu@bogon:~$ sudo nginx -V                       &lt;-- 查看nginx的编译参数</span><br><span class="line">testu@bogon:~$ cat /etc/nginx/nginx.conf           &lt;-- 查看nginx的配置文件</span><br><span class="line">testu@bogon:~$ cat /etc/nginx/conf.d/default.conf  &lt;-- 还是nginx的配置文件</span><br><span class="line">testu@bogon:~$ systemctl status nginx              &lt;-- 查看nginx服务的状态</span><br><span class="line">testu@bogon:~$ sudo systemctl start nginx          &lt;-- 启动nginx服务</span><br><span class="line">testu@bogon:~$ sudo systemctl enable nginx         &lt;-- 设置nginx开机启动</span><br><span class="line">testu@bogon:~$ systemctl status nginx              &lt;-- 确认nginx服务的启动状态</span><br><span class="line">testu@bogon:~$ ip a                                &lt;-- 查看本机IP地址</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/welcome-to-nginx.png" alt="Nginx安装-成功"></p>
+<p>通过服务器的IP地址打开网站，显示欢迎界面表示Nginx成功安装。至于Nginx站点的配置文件，我们在安装完php后回头一起配置。</p>
+<h2 id="MariaDB安装"><a href="#MariaDB安装" class="headerlink" title="MariaDB安装"></a>MariaDB安装</h2><p>MariaDB是MySQL的直接替代品，完全兼容MySQL，支持所有标准的MySQL功能，包括API和命令行等。</p>
+<h3 id="MariaDB的版本选择"><a href="#MariaDB的版本选择" class="headerlink" title="MariaDB的版本选择"></a>MariaDB的版本选择</h3><p>我们可以在MariaDB的<a target="_blank" rel="noopener" href="https://mariadb.com/kb/en/mariadb-server-release-dates/">知识库页面</a>中了解到：</p>
+<ul>
+<li><del>10.7版本是一个短期支持版本</del>（直接不考虑）</li>
+<li><strong>10.6版本是一个长期支持版本</strong></li>
+<li>10.5支持到2025年6月24号</li>
+</ul>
+<p>通过以下命令，我们可以检查Debian官方源提供的mariadb-server是哪个版本的：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">testu@bogon:~$ apt-cache search mariadb-server</span><br><span class="line">testu@bogon:~$ apt-cache show mariadb-server</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/mariadb-server-105.png" alt="Debian 11自带源默认MariaDB 10.5版本"></p>
+<p>我们可以看到系统自带源中的MariaDB是10.5版本的。</p>
+<p>在WordPress<a target="_blank" rel="noopener" href="https://wordpress.org/about/requirements/">需求页面</a>上，我们可以查到WordPress对MariaDB版本的最低要求是10.2。</p>
+<p>综上，<strong>我们直接安装系统自带源中的MariaDB（10.5版本，MariaDB官方支持到2025年6月24日）</strong>即可。</p>
+<h3 id="安装MariaDB"><a href="#安装MariaDB" class="headerlink" title="安装MariaDB"></a>安装MariaDB</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">testu@bogon:~$ sudo apt update                                 &lt;-- 更新源</span><br><span class="line">testu@bogon:~$ sudo apt install mariadb-server                 &lt;-- 安装mariadb-server</span><br><span class="line">testu@bogon:~$ systemctl status mariadb                        &lt;-- 确认mariadb已启动</span><br><span class="line">testu@bogon:~$ sudo mysql_secure_installation                  &lt;-- 执行数据库自带的安全脚本</span><br><span class="line">testu@bogon:~$ whereis mysql</span><br><span class="line">testu@bogon:~$ ls -al /usr/bin/mysql                           &lt;-- 此处只是为了让亲知道mysql是一个指向mariadb的链接</span><br><span class="line">testu@bogon:~$ mariadb --help | head -n 10                     &lt;-- 查看mariadb的配置文件位置</span><br><span class="line">mariadb  Ver 15.1 Distrib 10.5.15-MariaDB, for debian-linux-gnu (x86_64) using  EditLine wrapper</span><br><span class="line">Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.</span><br><span class="line"></span><br><span class="line">Usage: mariadb [OPTIONS] [database]</span><br><span class="line"></span><br><span class="line">Default options are read from the following files in the given order:</span><br><span class="line">/etc/my.cnf /etc/mysql/my.cnf ~/.my.cnf</span><br><span class="line">The following groups are read: mysql mariadb-client client client-server client-mariadb</span><br><span class="line">The following options may be given as the first argument:</span><br><span class="line">--print-defaults          Print the program argument list and exit.</span><br><span class="line"></span><br><span class="line">testu@bogon:~$ ls -al /etc/my.cnf /etc/mysql/my.cnf ~/.my.cnf  &lt;-- /etc/my.cnf和~/.my.cnf文件都不存在，/etc/mysql/my.cnf是配置文件</span><br><span class="line">testu@bogon:~$ cat /etc/mysql/my.cnf                           &lt;-- 查看/etc/mysql/my.cnf配置文件，发现它加载/etc/mysql/conf.d/和/etc/mysql/mariadb.conf.d/目录下的.cnf配置文件</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">The MariaDB configuration file</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash"><span class="comment"># The MariaDB/MySQL tools read configuration files in the following order:</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">0. <span class="string">&quot;/etc/mysql/my.cnf&quot;</span> symlinks to this file, reason why all the rest is <span class="built_in">read</span>.</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">1. <span class="string">&quot;/etc/mysql/mariadb.cnf&quot;</span> (this file) to <span class="built_in">set</span> global defaults,</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">2. <span class="string">&quot;/etc/mysql/conf.d/*.cnf&quot;</span> to <span class="built_in">set</span> global options.</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">3. <span class="string">&quot;/etc/mysql/mariadb.conf.d/*.cnf&quot;</span> to <span class="built_in">set</span> MariaDB-only options.</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">4. <span class="string">&quot;~/.my.cnf&quot;</span> to <span class="built_in">set</span> user-specific options.</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash">[client-server]</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Port or socket location <span class="built_in">where</span> to connect</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">port = 3306</span></span><br><span class="line">socket = /run/mysqld/mysqld.sock</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Import all .cnf files from configuration directory</span></span><br><span class="line">!includedir /etc/mysql/conf.d/</span><br><span class="line">!includedir /etc/mysql/mariadb.conf.d/</span><br><span class="line"></span><br><span class="line">testu@bogon:~$ ls -al /etc/mysql/mariadb.conf.d/</span><br><span class="line">testu@bogon:~$ cat /etc/mysql/mariadb.conf.d/50-server.cnf     &lt;-- 数据库配置文件位置</span><br><span class="line">testu@bogon:~$ sudo netstat -ap | grep mariadb                 &lt;-- 查看数据库的监听情况</span><br><span class="line">testu@bogon:~$ sudo systemctl enable mariadb                   &lt;-- 设置开机启动</span><br></pre></td></tr></table></figure>
+
+<p>更多关于配置文件的信息，可以查看<a target="_blank" rel="noopener" href="https://mariadb.com/kb/en/configuring-mariadb-with-option-files/">MariaDB文档</a>。</p>
+<h3 id="新建数据库和用户，并进行授权"><a href="#新建数据库和用户，并进行授权" class="headerlink" title="新建数据库和用户，并进行授权"></a>新建数据库和用户，并进行授权</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">testu@bogon:~$ mysql -uroot -p</span><br><span class="line">Enter password:</span><br><span class="line">MariaDB [(none)]&gt; show databases;</span><br><span class="line">MariaDB [(none)]&gt; create database testenv;                                                     &lt;-- 新建数据库</span><br><span class="line">MariaDB [(none)]&gt; create user &#x27;testd&#x27;@&#x27;localhost&#x27; identified by &#x27;123456&#x27;;                      &lt;-- 添加新用户</span><br><span class="line">MariaDB [(none)]&gt; grant all privileges on testenv.* to &#x27;testd&#x27;@&#x27;localhost&#x27; with grant option;  &lt;-- 授权新用户拥有指定数据库的权限</span><br><span class="line">MariaDB [(none)]&gt; flush privileges;                                                            &lt;-- 刷新使之立刻生效</span><br><span class="line">MariaDB [(none)]&gt; exit</span><br><span class="line"></span><br><span class="line">testu@bogon:~$ mysql -utestd -p</span><br><span class="line">Enter password:</span><br><span class="line">MariaDB [(none)]&gt; show databases;</span><br><span class="line">MariaDB [(none)]&gt; exit</span><br></pre></td></tr></table></figure>
+
+<p>当然，以上新建数据库、用户和授权操作你也可以使用数据库工具完成，例如Navicat，MySQL <a target="_blank" rel="noopener" href="https://www.mysql.com/cn/products/workbench/">Workbench</a>等。需要注意的是MariaDB默认监听的是本地127.0.0.1的IP，如果使用连接工具的话，需要配置SSH连接后再进行数据库连接。具体见下面两张图。另外的解决办法就是修改MariaDB的配置文件使其监听可访问的IP，如有需要还要额外设置防火墙规则。出于安全和我懒的原因，我保持原状——不改配置，使用数据库工具连接SSH后连接数据库。</p>
+<p><img src="/images/mariadb-listen-on-localhost.png" alt="MariaDB默认监听本地地址"></p>
+<p><img src="/images/navicat-ssh-db.png" alt="Navicat配置SSH连接"></p>
+<h2 id="PHP安装"><a href="#PHP安装" class="headerlink" title="PHP安装"></a>PHP安装</h2><p>PHP FastCGI进程管理器（FPM）是FastCGI PHP的替代品，其有更优的产品功能和特性，每秒可以处理更多的请求，可以更高效的处理规模和流量更大的站点。</p>
+<h3 id="PHP版本的选择"><a href="#PHP版本的选择" class="headerlink" title="PHP版本的选择"></a>PHP版本的选择</h3><p>在WordPress<a target="_blank" rel="noopener" href="https://wordpress.org/about/requirements/">需求页面</a>上，我们可以查到WordPress对PHP版本的最低要求是7.4。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">testu@bogon:~$ apt-cache search php-fpm</span><br><span class="line">testu@bogon:~$ apt-cache show php-fpm</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/debian-php-74.png" alt="Debian 11自带源默认php-fpm 7.4版本"></p>
+<p>通过以上指令，我们可以确认官方源自带php-fpm的版本就是7.4，所以我们<strong>直接安装系统自带的版本（7.4版本）</strong>就好。</p>
+<h3 id="PHP及扩展的安装"><a href="#PHP及扩展的安装" class="headerlink" title="PHP及扩展的安装"></a>PHP及扩展的安装</h3><p>从WordPress官方文档上我们可以看到<a target="_blank" rel="noopener" href="https://make.wordpress.org/hosting/handbook/server-environment/#php-extensions">WordPress所需的PHP扩展</a>及<a target="_blank" rel="noopener" href="https://make.wordpress.org/hosting/handbook/server-environment/#system-packages">WordPress所要求的服务器软件包</a>。</p>
+<p>直接安装是会报错的，如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">testu@bogon:~$ sudo apt install php-fpm php-&#123;json,mysql,curl,dom,exif,fileinfo,hash,imagick,mbstring,openssl,pcre,xml,zip,bcmath,filter,gd,iconv,intl,mcrypt,simplexml,sodium,xmlreader,zlib,ssh2,ftp,sockets&#125;</span><br><span class="line">[sudo] password for testu: </span><br><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree... Done</span><br><span class="line">Reading state information... Done</span><br><span class="line">Note, selecting &#x27;php7.4-xml&#x27; instead of &#x27;php-dom&#x27;</span><br><span class="line">Note, selecting &#x27;php7.4-common&#x27; instead of &#x27;php-exif&#x27;</span><br><span class="line">Note, selecting &#x27;php7.4-common&#x27; instead of &#x27;php-fileinfo&#x27;</span><br><span class="line">Note, selecting &#x27;php7.4-common&#x27; instead of &#x27;php-iconv&#x27;</span><br><span class="line">Note, selecting &#x27;php7.4-xml&#x27; instead of &#x27;php-simplexml&#x27;</span><br><span class="line">Note, selecting &#x27;php7.4-xml&#x27; instead of &#x27;php-xmlreader&#x27;</span><br><span class="line">Note, selecting &#x27;php7.4-common&#x27; instead of &#x27;php-ftp&#x27;</span><br><span class="line">Note, selecting &#x27;php7.4-common&#x27; instead of &#x27;php-sockets&#x27;</span><br><span class="line">Package php-mcrypt is not available, but is referred to by another package.</span><br><span class="line">This may mean that the package is missing, has been obsoleted, or</span><br><span class="line">is only available from another source</span><br><span class="line"></span><br><span class="line">E: Unable to locate package php-hash</span><br><span class="line">E: Unable to locate package php-openssl</span><br><span class="line">E: Unable to locate package php-pcre</span><br><span class="line">E: Unable to locate package php-filter</span><br><span class="line">E: Package &#x27;php-mcrypt&#x27; has no installation candidate</span><br><span class="line">E: Unable to locate package php-sodium</span><br><span class="line">E: Unable to locate package php-zlib</span><br></pre></td></tr></table></figure>
+
+<p>之所以报错是因为PHP版本升级，扩展有些变动，我们敲的命令再正确了。时空变换，人非物也非。我们换个姿势，再来一次：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">testu@bogon:~$ sudo apt install openssl libssl-dev libpcre3 libpcre3-dev libsodium23 libsodium-dev zlib1g zlib1g-dev libmcrypt4 libmcrypt-dev imagemagick ghostscript</span><br><span class="line">testu@bogon:~$ sudo apt install php7.4-fpm php7.4-&#123;json,mysql,curl,common,imagick,mbstring,xml,zip,bcmath,gd,intl,ssh2&#125;</span><br><span class="line">testu@bogon:~$ php -i                                &lt;-- 显示php信息</span><br><span class="line">testu@bogon:~$ systemctl status php7.4-fpm           &lt;-- 查看php7.4-fpm服务状态，上面也会显示php-fpm所采用的配置文件为/etc/php/7.4/fpm/php-fpm.conf</span><br><span class="line">testu@bogon:~$ cat /etc/php/7.4/fpm/php-fpm.conf     &lt;-- php-fpm配置文件，实际加载了/etc/php/7.4/fpm/pool.d/目录下的所有.conf配置文件</span><br><span class="line">testu@bogon:~$ cat /etc/php/7.4/fpm/pool.d/www.conf  &lt;-- php-fpm的实际配置文件</span><br><span class="line">testu@bogon:~$ cat /etc/php/7.4/fpm/php.ini          &lt;-- php配置文件</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置php-fpm"><a href="#配置php-fpm" class="headerlink" title="配置php-fpm"></a>配置php-fpm</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">testu@bogon:~$ cat /etc/nginx/nginx.conf                    &lt;-- 确认nginx启动的用户，为nginx</span><br><span class="line">testu@bogon:~$ id nginx</span><br><span class="line">testu@bogon:~$ sudo vi /etc/php/7.4/fpm/pool.d/www.conf     &lt;-- 编辑user、group、listen.owner和listen.group属性，改为与nginx启动相同的用户——即nginx</span><br><span class="line">testu@bogon:~$ sudo sed -i &#x27;s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g&#x27; /etc/php/7.4/fpm/php.ini</span><br><span class="line">testu@bogon:~$ sudo systemctl restart php7.4-fpm            &lt;-- 重启php7.4-fpm服务</span><br><span class="line">testu@bogon:~$ ls -al /run/php/php7.4-fpm.sock              &lt;-- 确认socket用户已变更</span><br><span class="line">testu@bogon:~$ sudo systemctl enable php7.4-fpm             &lt;-- 设置php-fpm服务开机启动</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/php-fpm-config.png" alt="配置PHP后的结果"></p>
+<p>配置后大概是这个样子的，如上图所示。</p>
+<h2 id="WordPress搭建"><a href="#WordPress搭建" class="headerlink" title="WordPress搭建"></a>WordPress搭建</h2><h3 id="配置Nginx支持php网页"><a href="#配置Nginx支持php网页" class="headerlink" title="配置Nginx支持php网页"></a>配置Nginx支持php网页</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">testu@bogon:~$ sudo cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.20220507.bak  &lt;-- 备份nginx当前的站点配置</span><br><span class="line">testu@bogon:~$ sudo mkdir -p /usr/share/nginx/html/test-env-website                                &lt;-- 建立新站点的根目录</span><br><span class="line">testu@bogon:~$ sudo chown -R nginx:nginx /usr/share/nginx/html/test-env-website/                   &lt;-- 变更站点目录的所有者为nginx用户</span><br><span class="line">testu@bogon:~$ ls -al /usr/share/nginx/html/test-env-website/</span><br><span class="line">testu@bogon:~$ sudo vi /etc/nginx/conf.d/default.conf                                              &lt;-- 编辑nginx的站点配置，文件内容贴在下方</span><br><span class="line">testu@bogon:~$ sudo nginx -t                                                                       &lt;-- 验证nginx配置的正确性</span><br><span class="line">testu@bogon:~$ sudo nginx -s reload                                                                &lt;-- 让nginx重新加载配置文件，使配置生效</span><br><span class="line">testu@bogon:~$ sudo vi /usr/share/nginx/html/test-env-website/info.php                             &lt;-- 在站点目录下写一个php文件，验证php配置正确</span><br></pre></td></tr></table></figure>
+
+<p>修改后的nginx的站点配置文件<code>/etc/nginx/conf.d/default.conf</code>内容如下，即混合了WordPress官方推荐的Nginx配置（<a target="_blank" rel="noopener" href="https://wordpress.org/support/article/nginx/">链接一</a>、<a target="_blank" rel="noopener" href="https://www.nginx.com/resources/wiki/start/topics/recipes/wordpress/">链接二</a>）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"># /etc/nginx/conf.d/default.conf</span><br><span class="line"></span><br><span class="line"># WordPress single site rules.</span><br><span class="line"># Designed to be included in any server &#123;&#125; block.</span><br><span class="line"># Upstream to abstract backend connection(s) for php</span><br><span class="line">upstream php &#123;</span><br><span class="line">        server unix:/run/php/php7.4-fpm.sock;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  localhost;</span><br><span class="line"></span><br><span class="line">    #access_log  /var/log/nginx/host.access.log  main;</span><br><span class="line"></span><br><span class="line">    root   /usr/share/nginx/html/test-env-website;</span><br><span class="line">    index  index.php index.html index.htm;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        # This is cool because no php is touched for static content.</span><br><span class="line">        # include the &quot;?$args&quot; part so non-default permalinks doesn&#x27;t break when using query string</span><br><span class="line">        try_files $uri $uri/ /index.php?$args;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    #error_page  404              /404.html;</span><br><span class="line"></span><br><span class="line">    # redirect server error pages to the static page /50x.html</span><br><span class="line">    #</span><br><span class="line">    error_page   500 502 503 504  /50x.html;</span><br><span class="line">    location = /50x.html &#123;</span><br><span class="line">        root   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span><br><span class="line">    #</span><br><span class="line">    location ~ \.php$ &#123;</span><br><span class="line">        #NOTE: You should have &quot;cgi.fix_pathinfo = 0;&quot; in php.ini</span><br><span class="line">        include fastcgi_params;</span><br><span class="line">        fastcgi_intercept_errors on;</span><br><span class="line">        fastcgi_pass php;</span><br><span class="line">        #The following parameter can be also included in fastcgi_params file</span><br><span class="line">        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    # WordPress global restrictions file</span><br><span class="line"></span><br><span class="line">    # Global restrictions configuration file.</span><br><span class="line">    # Designed to be included in any server &#123;&#125; block.</span><br><span class="line">    location = /favicon.ico &#123;</span><br><span class="line">        log_not_found off;</span><br><span class="line">        access_log off;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    location = /robots.txt &#123;</span><br><span class="line">        allow all;</span><br><span class="line">        log_not_found off;</span><br><span class="line">        access_log off;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    # Deny all attempts to access hidden files such as .htaccess, .htpasswd, .DS_Store (Mac).</span><br><span class="line">    # Keep logging the requests to parse later (or to pass to firewall utilities such as fail2ban)</span><br><span class="line">    location ~ /\. &#123;</span><br><span class="line">        deny all;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    # Deny access to any files with a .php extension in the uploads directory</span><br><span class="line">    # Works in sub-directory installs and also in multisite network</span><br><span class="line">    # Keep logging the requests to parse later (or to pass to firewall utilities such as fail2ban)</span><br><span class="line">    location ~* /(?:uploads|files)/.*\.php$ &#123;</span><br><span class="line">        deny all;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    # General WordPress rules</span><br><span class="line"></span><br><span class="line">    location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ &#123;</span><br><span class="line">        expires max;</span><br><span class="line">        log_not_found off;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>用于验证php配置的<code>/usr/share/nginx/html/test-env-website/info.php</code>文件内容如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">phpinfo</span>();</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/check-nginx-php-config.png" alt="PHP安装-验证成功"></p>
+<p>通过IP地址访问站点下的info.php页面，成功显示内容表示Nginx-PHP被正确配置。撒花。</p>
+<h3 id="WordPress搭建-1"><a href="#WordPress搭建-1" class="headerlink" title="WordPress搭建"></a>WordPress搭建</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">testu@bogon:~$ sudo rm -rf /usr/share/nginx/html/test-env-website/info.php        &lt;-- 删除用于测试的info.php文件，以防止他人查看本地的php环境数据</span><br><span class="line">testu@bogon:~$ wget https://wordpress.org/latest.tar.gz                           &lt;-- 下载最新版的WordPress</span><br><span class="line">testu@bogon:~$ tar xzvf latest.tar.gz                                             &lt;-- 解压文件</span><br><span class="line">testu@bogon:~$ sudo mv ./wordpress/* /usr/share/nginx/html/test-env-website/      &lt;-- 移动文件到网站目录下</span><br><span class="line">testu@bogon:~$ rm -rf ./wordpress/                                                &lt;-- 删除移走文件后剩下的空目录</span><br><span class="line">testu@bogon:~$ sudo chown -R nginx:nginx /usr/share/nginx/html/test-env-website/  &lt;-- 修改网站目录下全部文件的所有者</span><br></pre></td></tr></table></figure>
+
+<p>剩下的就是打开网站，按提示一步一步安装WordPress了。放个安装好的截图~</p>
+<p><img src="/images/wordpress-installation-finished.png" alt="WordPress搭建"></p>
+<p>最后说一下，如果遇到错误，可以试着通过Nginx和php的错误日志来尝试确定、解决问题~</p>
+
+    </article>
+    <!-- license -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://tsz.me">Tsz Chiu Wong</a>
+            <p>原文链接：<a href="https://tsz.me/p/20220512_install-nginx-mariadb-php-lemp-lnmp-stack.html">https://tsz.me/p/20220512_install-nginx-mariadb-php-lemp-lnmp-stack.html</a>
+            <p>发表日期：<a href="https://tsz.me/p/20220512_install-nginx-mariadb-php-lemp-lnmp-stack.html">2022年05月12日 16时09分36秒</a>
+            <p>更新日期：<a href="https://tsz.me/p/20220512_install-nginx-mariadb-php-lemp-lnmp-stack.html">2022年05月12日 16时09分36秒</a>
+            <p>版权声明：本博客所有标注原创的文章除特别声明外，均采用<a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA</a>许可协议。转载请注明出处。</p>
+        </div>
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href="/p/20220903_v2ray%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%20(%E8%AF%B7%E6%B7%BB%E5%8A%A0%E8%BF%9E%E5%AD%97%E7%AC%A6).html" title="v2ray环境部署">
+                    <div class="nextTitle">v2ray环境部署</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/p/20220511_debian-11-installation-guide.html" title="Debian 11安装与基本配置">
+                    <div class="prevTitle">Debian 11安装与基本配置</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- comment -->
+    
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+
+            
+
+            
+
+            
+
+            <!-- utteranc评论 -->
+
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+
+            
+            
+
+            
+
+        </div>
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
+    
+</main>
+
+                <!-- profile -->
+                
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+        <div class="social">
+            
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a href="/atom.xml" class="iconfont-archer rss" target="_blank" title=rss></a>
+            
+        
+    
+
+
+        </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank" rel="external nofollow">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank" rel="external nofollow">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    
+    <!-- 不蒜子  -->
+    
+        <div class="busuanzi-container">
+            
+             
+                <span id="busuanzi_container_site_pv">本站总计访问次数：<span id="busuanzi_value_site_pv"></span></span>
+            
+        </div>
+    	
+</footer>
+
+        </div>
+        <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#LNMP%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E8%AF%B4%E6%98%8E"><span class="toc-number">1.</span> <span class="toc-text">LNMP环境搭建说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">Nginx安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MariaDB%E5%AE%89%E8%A3%85"><span class="toc-number">3.</span> <span class="toc-text">MariaDB安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MariaDB%E7%9A%84%E7%89%88%E6%9C%AC%E9%80%89%E6%8B%A9"><span class="toc-number">3.1.</span> <span class="toc-text">MariaDB的版本选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85MariaDB"><span class="toc-number">3.2.</span> <span class="toc-text">安装MariaDB</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93%E5%92%8C%E7%94%A8%E6%88%B7%EF%BC%8C%E5%B9%B6%E8%BF%9B%E8%A1%8C%E6%8E%88%E6%9D%83"><span class="toc-number">3.3.</span> <span class="toc-text">新建数据库和用户，并进行授权</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PHP%E5%AE%89%E8%A3%85"><span class="toc-number">4.</span> <span class="toc-text">PHP安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP%E7%89%88%E6%9C%AC%E7%9A%84%E9%80%89%E6%8B%A9"><span class="toc-number">4.1.</span> <span class="toc-text">PHP版本的选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP%E5%8F%8A%E6%89%A9%E5%B1%95%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">4.2.</span> <span class="toc-text">PHP及扩展的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEphp-fpm"><span class="toc-number">4.3.</span> <span class="toc-text">配置php-fpm</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WordPress%E6%90%AD%E5%BB%BA"><span class="toc-number">5.</span> <span class="toc-text">WordPress搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AENginx%E6%94%AF%E6%8C%81php%E7%BD%91%E9%A1%B5"><span class="toc-number">5.1.</span> <span class="toc-text">配置Nginx支持php网页</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WordPress%E6%90%AD%E5%BB%BA-1"><span class="toc-number">5.2.</span> <span class="toc-text">WordPress搭建</span></a></li></ol></li></ol>
+            </div>
+        
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 17
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+        
+            
+            
+            <div class="archive-year"> 2022 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/03</span>
+            <a class="archive-post-title" href="/p/20220903_v2ray%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%20(%E8%AF%B7%E6%B7%BB%E5%8A%A0%E8%BF%9E%E5%AD%97%E7%AC%A6).html">v2ray环境部署</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/12</span>
+            <a class="archive-post-title" href="/p/20220512_install-nginx-mariadb-php-lemp-lnmp-stack.html">LEMP/LNMP环境搭建（Debian 11）</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/11</span>
+            <a class="archive-post-title" href="/p/20220511_debian-11-installation-guide.html">Debian 11安装与基本配置</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2021 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span>
+            <a class="archive-post-title" href="/p/20211007_%E3%80%8A%E5%8D%A1%E7%89%87%E7%AC%94%E8%AE%B0%E5%86%99%E4%BD%9C%E6%B3%95%E3%80%8B%E9%98%85%E8%AF%BB%E4%B8%8E%E5%AE%9E%E8%B7%B5.html">《卡片笔记写作法》阅读与实践</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/13</span>
+            <a class="archive-post-title" href="/p/20210913_%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F.html">微信小程序</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span>
+            <a class="archive-post-title" href="/hardware/switch.html">Switch!</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/03</span>
+            <a class="archive-post-title" href="/p/20210903_microblog.html">空中有朵棉花糖</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/02</span>
+            <a class="archive-post-title" href="/p/20210902_%E4%BA%BA%E7%94%9F%E8%8B%A6%E7%9F%AD%E7%9A%84Python.html">人生苦短的Python</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/01</span>
+            <a class="archive-post-title" href="/p/20210901_MySQL-%E6%90%9E%E5%AE%83.html">MySQL，搞它</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/30</span>
+            <a class="archive-post-title" href="/p/20210830_%E5%88%9D%E6%AD%A5%E4%BA%86%E8%A7%A3LGBT.html">初步了解LGBT</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/25</span>
+            <a class="archive-post-title" href="/p/20210125_Resilio-Sync-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C.html">Resilio Sync 工具使用手册</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2020 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/14</span>
+            <a class="archive-post-title" href="//tsz.me/hardware/xbox-one.html">xbox one 相关记录</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/16</span>
+            <a class="archive-post-title" href="/p/20200716_my-video-production-attempts-and-thoughts.html">我的视频制作尝试与想法（2022）</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2019 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/23</span>
+            <a class="archive-post-title" href="/p/20191223_%E5%8D%9A%E5%AE%A2%E5%86%8D%E6%90%AD%E5%BB%BA.html">博客再搭建</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2016 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/09</span>
+            <a class="archive-post-title" href="/p/20160909_my-keyboards.html">我的键盘清单</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2014 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/16</span>
+            <a class="archive-post-title" href="/hardware/raspberry-pi.html">Raspberry Pi 使用记录</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/03</span>
+            <a class="archive-post-title" href="/p/20140603_%E5%81%9A%E8%8F%9C%E7%BB%83%E4%B9%A0.html">做菜练习</a>
+        </li>
+    
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+        
+            <span class="sidebar-tag-name" data-tags="技术类">
+                <span class="iconfont-archer">&#xe606;</span>
+                技术类
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="LGBT">
+                <span class="iconfont-archer">&#xe606;</span>
+                LGBT
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="跨性别">
+                <span class="iconfont-archer">&#xe606;</span>
+                跨性别
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="厌女症">
+                <span class="iconfont-archer">&#xe606;</span>
+                厌女症
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="社会排斥">
+                <span class="iconfont-archer">&#xe606;</span>
+                社会排斥
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="性别歧视">
+                <span class="iconfont-archer">&#xe606;</span>
+                性别歧视
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="女权主义">
+                <span class="iconfont-archer">&#xe606;</span>
+                女权主义
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="生活类">
+                <span class="iconfont-archer">&#xe606;</span>
+                生活类
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="吃">
+                <span class="iconfont-archer">&#xe606;</span>
+                吃
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="记录">
+                <span class="iconfont-archer">&#xe606;</span>
+                记录
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="配置">
+                <span class="iconfont-archer">&#xe606;</span>
+                配置
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="第三类">
+                <span class="iconfont-archer">&#xe606;</span>
+                第三类
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="设备">
+                <span class="iconfont-archer">&#xe606;</span>
+                设备
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="游戏主机">
+                <span class="iconfont-archer">&#xe606;</span>
+                游戏主机
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="开箱">
+                <span class="iconfont-archer">&#xe606;</span>
+                开箱
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="MySQL">
+                <span class="iconfont-archer">&#xe606;</span>
+                MySQL
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="数据库">
+                <span class="iconfont-archer">&#xe606;</span>
+                数据库
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="软件">
+                <span class="iconfont-archer">&#xe606;</span>
+                软件
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="开发">
+                <span class="iconfont-archer">&#xe606;</span>
+                开发
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="读书">
+                <span class="iconfont-archer">&#xe606;</span>
+                读书
+            </span>
+        
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="原创">
+            <span class="iconfont-archer">&#xe60a;</span>
+            原创
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_好奇">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_好奇
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_生活">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_生活
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_设备">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_设备
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="c_新生代农民工">
+            <span class="iconfont-archer">&#xe60a;</span>
+            c_新生代农民工
+        </span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMetaRoot = "/"
+    if (siteMetaRoot === "undefined") {
+        siteMetaRoot = '/'
+    }
+    var siteMeta = {
+        url: "https://tsz.me",
+        root: siteMetaRoot,
+        author: "Tsz Chiu Wong"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+
+        <!-- main func -->
+        <script src="/scripts/main.js?v=20211217"></script>
+        <!-- dark mode -->
+        <script src="/scripts/dark.js?v=20211217"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+        <!-- algolia -->
+        
+        <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20211217" async></script>
+        
+        <!-- mermaid -->
+        
+    </body>
+</html>
